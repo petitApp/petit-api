@@ -7,7 +7,7 @@ use App\User;
 
 class UserController extends Controller
 {
-    // TODO: login por username y por correo de manera dinamica
+    
     public function generateToken(Request $request, $id)
     {
         if (isset($request) && isset($id)) {
@@ -15,7 +15,7 @@ class UserController extends Controller
             try {
                 $user = User::find($id);
                 $token = $request->api_token;
-                $user->api_token = hash('sha256', $token);
+                $user->token = hash('sha256', $token);
                 $user->save();
                 $response = array('code' => 200, 'msg' => 'Token Generated');
             } catch (\Exception $exception) {
@@ -33,16 +33,14 @@ class UserController extends Controller
             if (!$request->email) array_push($response['error_msg'], 'Email is required');
             if (!$request->password) array_push($response['error_msg'], 'Password is required');
             if (!$request->user_name) array_push($response['error_msg'], 'User name is required');
-            if (!$request->birthday) array_push($response['error_msg'], 'Birthday is required');
             if (!count($response['error_msg']) > 0) {
                 try {
                     $user = new User();
                     $user->email = $request->email;
                     $user->password = hash('sha256', $request->password);
                     $user->user_name = $request->user_name;
-                    $user->birthday = $request->birthday;
                     $user->save();
-                    $response = array('code' => 200, 'msg' => 'User created');
+                    $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
                 } catch (\Exception $exception) {
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }
@@ -61,10 +59,9 @@ class UserController extends Controller
         if (isset($request) && isset($id) && !empty($user)) {
                 try {
                     $user->email = $request->email ? $request->email : $user->email;
-                    $user->password = $request->password ? $request->password : $user->password;
+                    $user->password = $request->password ? hash('sha256', $request->password): $user->password;
                     $user->user_name = $request->user_name ? $request->user_name : $user->user_name;
                     $user->location = $request->location ? $request->location : $user->location;
-                    $user->birthday = $request->birthday ? $request->birthday : $user->birthday;
                     $user->picture = $request->picture ? $request->picture : $user->picture;
                     $user->save();
                     $response = array('code' => 200, 'msg' => 'User updated');
@@ -83,7 +80,7 @@ class UserController extends Controller
         $response = array('code' => 400, 'error_msg' => []);
         if (isset($id)) {
             try {
-            $user = User::where('id', '=', $id)->get(['id', 'name', 'email','user_name','address','birthday','telephone_number','picture']);
+            $user = User::where('id', '=', $id)->get(['id', 'name', 'email','user_name','address','telephone_number','picture']);
             } catch (\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
