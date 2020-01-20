@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/user', 'UserController@createUser' );
 Route::post('/user/generateToken/{id}', 'UserController@generateToken' );
 Route::get('/users', 'UserController@getUsers' );
+Route::post('/animal', 'AnimalController@createAnimal' );
+
 
 Route::middleware('auth:api')->get('/user/{id}', 'UserController@getUser' );
 Route::middleware('auth:api')->put('/user/{id}', 'UserController@UpdateUser' );
