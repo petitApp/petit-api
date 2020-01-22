@@ -20,10 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/user', 'UserController@createUser' );
 Route::post('/user/generateToken/{id}', 'UserController@generateToken' );
 Route::get('/users', 'UserController@getUsers' );
-Route::post('/animal', 'AnimalController@createAnimal' );
-
-
-Route::middleware('auth:api')->get('/user/{id}', 'UserController@getUser' );
-Route::middleware('auth:api')->put('/user/{id}', 'UserController@UpdateUser' );
-Route::middleware('auth:api')->delete('/user/{id}', 'UserController@deleteUser' );
 Route::post('/user/login', 'UserController@loginUser' );
+Route::get('/user/{id}', 'UserController@getUser' );
+
+// Route::middleware('auth:api')->get('/user/{id}', 'UserController@getUser' );
+// Route::middleware('auth:api')->put('/user/{id}', 'UserController@UpdateUser' );
+// Route::middleware('auth:api')->delete('/user/{id}', 'UserController@deleteUser' );
+
+Route::post('/animal', 'AnimalController@createAnimal' );
+Route::post('/animal/{id}', 'AnimalController@updateAnimal' );
+Route::get('/animal/{id}', 'AnimalController@getAnimal' );
+Route::get('/animals', 'AnimalController@getAllAnimals' );
