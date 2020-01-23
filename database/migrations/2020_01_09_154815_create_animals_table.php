@@ -18,7 +18,7 @@ class CreateAnimalsTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('id_type');
             $table->unsignedBigInteger('id_breed')->nullable();
-            $table->boolean('sex');
+            $table->string('sex');
             $table->integer('age');
             $table->string('location');
             $table->string('description');
