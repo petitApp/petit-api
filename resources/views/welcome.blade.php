@@ -74,6 +74,8 @@
             <a href="{{ url('/home') }}">Your Profile</a>
             @else
             <a href="{{ route('login') }}">Login</a>
+            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+
             @endauth
         </div>
         @endif
@@ -83,7 +85,7 @@
                 Petit Admin Panel
             </div>
 
-
+        
 
             @guest
 

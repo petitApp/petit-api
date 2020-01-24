@@ -9,12 +9,23 @@
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
 
-                    You are logged in!
+                    <div class="content">
+                        @guest
+
+                        @else
+                        <div class="links">
+                            <a href="{{ url('/user/create') }}">Create user</a>
+                            <a href="{{ url('/user/update') }}">Update user</a>
+
+                        </div>
+                        @endguest
+
+                    </div>
                 </div>
             </div>
         </div>
