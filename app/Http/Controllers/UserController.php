@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Mail;
 
 class UserController extends Controller
 {
@@ -148,5 +149,65 @@ class UserController extends Controller
     public function getUsers()
     {
         return User::all();
+    }
+
+    public function sendMail(Request $request) {
+        
+        $response = array('code' => 400, 'error_msg' => []);
+
+        //Pass generator
+        function rand_string( $length ) {
+            $chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+            return substr(str_shuffle($chars),0,$length);
+        }
+        //New password of the user
+        $newPass = rand_string(8);
+
+        try {
+            //User object
+            $user = User::where('email', '=', $request->email)->first();
+        } catch (\Throwable $th) {
+            $response = array('code' => 400, 'error_msg' => 'User not found');
+        }
+        
+        //Checking if the email exist
+        if (!empty($user)) {
+
+            //User data that will be used on the email
+            $email = $user->email;
+            $name = $user->user_name;
+
+            //Hash the new password  
+            $password = hash('sha256', $newPass);
+
+            //Save the new password to the user
+            $user->password = $password;
+            $user->save();
+
+            //Email sender and relative data 
+            $data = [
+                'name' => $name,
+                'password' => $newPass,
+            ];
+
+            $subject = "PetIt App - Reset password request";
+            $from =  env("MAIL_USERNAME");
+
+            try {
+                //Send Mail
+                $mailMsg = Mail::send('mail',["data"=>$data], function($msg) use($subject, $email, $from){
+                    $msg->from($from,"🐾 PetIt App 🐾");
+                    $msg->subject($subject);
+                    $msg->to($email);
+                }); 
+                $response = array('code' => 200, 'error_msg' => 'Email sended!');
+            } catch (\Throwable $th) {
+                $response = array('code' => 400, 'error_msg' => 'Error sending the message...');
+            }
+        } else {
+            $response = array('code' => 400, 'error_msg' => 'User not found');
+        }
+
+        return response()->json($response);
     }
 }
