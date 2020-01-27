@@ -167,7 +167,7 @@ class UserController extends Controller
             //User object
             $user = User::where('email', '=', $request->email)->first();
         } catch (\Throwable $th) {
-            $response['error_msg'] = 'User not found';
+            $response = array('code' => 400, 'error_msg' => 'User not found');
         }
         
         //Checking if the email exist
@@ -200,13 +200,12 @@ class UserController extends Controller
                     $msg->subject($subject);
                     $msg->to($email);
                 }); 
-                $response = ['error_msg' => 'Email sended!'];
-
+                $response = array('code' => 200, 'error_msg' => 'Email sended!');
             } catch (\Throwable $th) {
-                $response['error_msg'] = 'Error sending the message...';
+                $response = array('code' => 400, 'error_msg' => 'Error sending the message...');
             }
         } else {
-            $response['error_msg'] = 'User not found';
+            $response = array('code' => 400, 'error_msg' => 'User not found');
         }
 
         return response()->json($response);
