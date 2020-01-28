@@ -31,3 +31,5 @@ Route::post('/animal', 'AnimalController@createAnimal' );
 Route::post('/animal/{id}', 'AnimalController@updateAnimal' );
 Route::get('/animal/{id}', 'AnimalController@getAnimal' );
 Route::get('/animals', 'AnimalController@getAllAnimals' );
+
+Route::post('/user/password/reset', 'UserController@sendMail');

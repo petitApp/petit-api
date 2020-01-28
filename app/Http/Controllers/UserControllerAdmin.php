@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use Mail;
 
-class UserController extends Controller
+class UserControllerAdmin extends Controller
 {
 
     public function generateToken(Request $request, $id)
@@ -56,30 +55,35 @@ class UserController extends Controller
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
-        return response()->json($response);
+        // return response()->json($response);
+        return view('createuser', ['response' => $response]);
     }
 
 
-    public function updateUser(Request $request, $id)
+    public function updateUser(Request $request)
     {
-        $response = array('code' => 400, 'error_msg' => []);
-        $user = User::find($id);
-        if (isset($request) && isset($id) && !empty($user)) {
+        $user = User::find($request->id);
+        if (isset($request) && !empty($user)) {
             try {
                 $user->email = $request->email ? $request->email : $user->email;
                 $user->password = $request->password ? hash('sha256', $request->password) : $user->password;
                 $user->user_name = $request->user_name ? $request->user_name : $user->user_name;
                 $user->location = $request->location ? $request->location : $user->location;
                 $user->picture = $request->picture ? $request->picture : $user->picture;
+                $user->active = $request->active ? $request->active : $user->active;
+                $user->admin_user = $request->admin_user ? $request->admin_user : $user->admin_user;
                 $user->save();
-                $response = array('code' => 200, 'msg' => 'User updated');
+                $msg = 'User updated';
             } catch (\Exception $exception) {
-                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                $msg = $exception->getMessage();
             }
         } else {
-            $response['error_msg'] = 'Nothing to update';
+            $msg = 'Nothing to update';
         }
-        return response()->json($response);
+        $users = User::all();
+        $response = array('code' => 200, 'users' => $users, 'msg' => $msg);
+        // return response()->json($response);
+        return view('updateuser', ['responseUsers' => $response]);
     }
 
     public function getUser($id)
@@ -117,96 +121,14 @@ class UserController extends Controller
     }
 
 
-    public function loginUser(Request $request)
-    {
-        $response = array('code' => 400, 'error_msg' => []);
-        if ($request->email && $request->password) {
-            $user = User::where('email', "$request->email")->first();
-            if (!empty($user)) {
-                if ($user->password === hash('sha256', $request->password)) {
-                    try {
-                        $token = uniqid() . $user->email;
-                        $user->token = hash('sha256', $token);
-                        $user->save();
-                        $response = array('code' => 200, 'user' => $user, 'msg' => 'Login successful',);
-                    } catch (\Exception $exception) {
-                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-                    }
-                } else {
-                    $response['error_msg'] = 'Wrong password';
-                }
-            } else {
-                $response['error_msg'] = 'User not found';
-            }
-        } else {
-            $response['error_msg'] = 'Email and password are required';
-        }
 
-        return response()->json($response);
-    }
 
     public function getUsers()
     {
-        return User::all();
-    }
 
-    public function sendMail(Request $request)
-    {
-        $response = array('code' => 400, 'error_msg' => []);
-
-        try {
-            //User object
-            $user = User::where('email', '=', $request->email)->first();
-        } catch (\Throwable $th) {
-            $response = array('code' => 400, 'error_msg' => 'User not found');
-        }
-
-        //Checking if the email exist
-        if (!empty($user)) {
-            //New password of the user
-            $newPass = $this->rand_string(8);
-            //User data that will be used on the email
-            $email = $user->email;
-            $name = $user->user_name;
-
-            //Hash the new password  
-            $password = hash('sha256', $newPass);
-
-            //Save the new password to the user
-            $user->password = $password;
-            $user->save();
-
-            //Email sender and relative data 
-            $data = [
-                'name' => $name,
-                'password' => $newPass,
-            ];
-
-            $subject = "PetIt App - Reset password request";
-            $from =  env("MAIL_USERNAME");
-
-            try {
-                //Send Mail
-                $mailMsg = Mail::send('mail', ["data" => $data], function ($msg) use ($subject, $email, $from) {
-                    $msg->from($from, "🐾 PetIt App 🐾");
-                    $msg->subject($subject);
-                    $msg->to($email);
-                });
-                $response = array('code' => 200, 'error_msg' => 'Email sended!');
-            } catch (\Throwable $th) {
-                $response = array('code' => 400, 'error_msg' => 'Error sending the message...');
-            }
-        } else {
-            $response = array('code' => 400, 'error_msg' => 'User not found');
-        }
-
-        return response()->json($response);
-    }
-
-    //Pass generator
-    function rand_string($length)
-    {
-        $chars = "abcdefghijklmnopqrstuvwxyz1234567890";
-        return substr(str_shuffle($chars), 0, $length);
+        $users = User::all();
+        $response = array('code' => 200, 'users' => $users);
+        // return response()->json($response);
+        return view('updateuser', ['responseUsers' => $response]);
     }
 }
