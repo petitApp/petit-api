@@ -122,21 +122,20 @@ class UserController extends Controller
         $response = array('code' => 400, 'error_msg' => []);
         if ($request->email && $request->password) {
             $user = User::where('email', "$request->email")->first();
-            if (!empty($user) ){
-                if($user->password === hash('sha256', $request->password) ) {
+            if (!empty($user)) {
+                if ($user->password === hash('sha256', $request->password)) {
                     try {
                         $token = uniqid() . $user->email;
                         $user->token = hash('sha256', $token);
                         $user->save();
-                        $response = array('code' => 200, 'user' => $user,'msg'=>'Login successful', );
+                        $response = array('code' => 200, 'user' => $user, 'msg' => 'Login successful',);
                     } catch (\Exception $exception) {
                         $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                     }
-                }else {
+                } else {
                     $response['error_msg'] = 'Wrong password';
                 }
-            }
-           else {
+            } else {
                 $response['error_msg'] = 'User not found';
             }
         } else {
@@ -151,17 +150,9 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function sendMail(Request $request) {
-        
+    public function sendMail(Request $request)
+    {
         $response = array('code' => 400, 'error_msg' => []);
-
-        //Pass generator
-        function rand_string( $length ) {
-            $chars = "abcdefghijklmnopqrstuvwxyz1234567890";
-            return substr(str_shuffle($chars),0,$length);
-        }
-        //New password of the user
-        $newPass = rand_string(8);
 
         try {
             //User object
@@ -169,10 +160,11 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             $response = array('code' => 400, 'error_msg' => 'User not found');
         }
-        
+
         //Checking if the email exist
         if (!empty($user)) {
-
+            //New password of the user
+            $newPass = $this->rand_string(8);
             //User data that will be used on the email
             $email = $user->email;
             $name = $user->user_name;
@@ -195,11 +187,11 @@ class UserController extends Controller
 
             try {
                 //Send Mail
-                $mailMsg = Mail::send('mail',["data"=>$data], function($msg) use($subject, $email, $from){
-                    $msg->from($from,"🐾 PetIt App 🐾");
+                $mailMsg = Mail::send('mail', ["data" => $data], function ($msg) use ($subject, $email, $from) {
+                    $msg->from($from, "🐾 PetIt App 🐾");
                     $msg->subject($subject);
                     $msg->to($email);
-                }); 
+                });
                 $response = array('code' => 200, 'error_msg' => 'Email sended!');
             } catch (\Throwable $th) {
                 $response = array('code' => 400, 'error_msg' => 'Error sending the message...');
@@ -209,5 +201,12 @@ class UserController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    //Pass generator
+    function rand_string($length)
+    {
+        $chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+        return substr(str_shuffle($chars), 0, $length);
     }
 }

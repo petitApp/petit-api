@@ -106,7 +106,7 @@ class AnimalController extends Controller
         try {
             $animals = Animals::all(['id', 'name', 'id_owner', 'id_type', 'sex', 'age', 'location', 'description', 'prefered_photo', 'id_breed']);
             if (count($animals) > 0) {
-                $response = array('code' => 200, 'books' => $animals);
+                $response = array('code' => 200, 'animals' => $animals);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['animals not found']);
             }
