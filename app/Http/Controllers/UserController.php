@@ -87,7 +87,7 @@ class UserController extends Controller
         $response = array('code' => 400, 'error_msg' => []);
         if (isset($id)) {
             try {
-                $user = User::where('id', '=', $id)->get(['id', 'name', 'email', 'user_name', 'address', 'telephone_number', 'picture']);
+                $user = User::where('id', '=', $id)->get(['id', 'email', 'user_name', 'location', 'picture']);
             } catch (\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
