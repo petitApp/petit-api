@@ -116,5 +116,13 @@ class AnimalController extends Controller
         return response()->json($response);
     }
 
+    public function getAllAnimalsPaginated() 
+    {
+        //$animals = Animals::all(['id', 'name', 'id_owner', 'id_type', 'sex', 'age', 'location', 'description', 'prefered_photo', 'id_breed']);
+        $animals = Animals::orderBy('id', 'asc')->paginate(2)->onEachSide(2);
+
+        return view('defaultPaginated', compact('animals'));        
+    }
+
 
 }
