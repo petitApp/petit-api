@@ -8,24 +8,6 @@ use App\User;
 class UserControllerAdmin extends Controller
 {
 
-    public function generateToken(Request $request, $id)
-    {
-        if (isset($request) && isset($id)) {
-            $response = array('code' => 400, 'error_msg' => []);
-            try {
-                $user = User::find($id);
-                $token = $request->api_token;
-                $user->token = hash('sha256', $token);
-                $user->save();
-                $response = array('code' => 200, 'msg' => 'Token Generated');
-            } catch (\Exception $exception) {
-                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-            }
-        } else {
-            $response['error_msg'] = 'Nothing to create';
-        }
-        return response()->json($response);
-    }
     public function createUser(Request $request)
     {
         $response = array('code' => 400, 'error_msg' => []);

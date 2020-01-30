@@ -25,7 +25,7 @@ class UserController extends Controller
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
-        return response()->json($response);
+       return response($response,$response['code']);
     }
     public function createUser(Request $request)
     {
@@ -56,7 +56,7 @@ class UserController extends Controller
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
-        return response()->json($response);
+       return response($response,$response['code']);
     }
 
 
@@ -79,7 +79,7 @@ class UserController extends Controller
         } else {
             $response['error_msg'] = 'Nothing to update';
         }
-        return response()->json($response);
+       return response($response,$response['code']);
     }
 
     public function getUser($id)
@@ -97,7 +97,7 @@ class UserController extends Controller
                 $response = array('code' => 404, 'error_msg' => ['User not found']);
             }
         }
-        return response()->json($response);
+       return response($response,$response['code']);
     }
 
     public function deleteUser(Request $request, $id)
@@ -113,7 +113,7 @@ class UserController extends Controller
         } else {
             $response = array('code' => 401, 'error_msg' => 'Unautorized');
         }
-        return response()->json($response);
+       return response($response,$response['code']);
     }
 
 
@@ -142,7 +142,7 @@ class UserController extends Controller
             $response['error_msg'] = 'Email and password are required';
         }
 
-        return response()->json($response);
+        return response($response,$response['code']);
     }
 
     public function getUsers()
@@ -200,7 +200,7 @@ class UserController extends Controller
             $response = array('code' => 400, 'error_msg' => 'User not found');
         }
 
-        return response()->json($response);
+       return response($response,$response['code']);
     }
 
     //Pass generator
