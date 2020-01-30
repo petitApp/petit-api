@@ -17,7 +17,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="id_owner" class="col-md-4 col-form-label text-md-right">Owner id</label>
+                            <label for="id_owner" class="col-md-4 col-form-label text-md-right">Owner ID</label>
                             <div class="col-md-6">
                                 <input id="id_owner" type="number" class="form-control" name="id_owner" required autofocus>
                             </div>
@@ -82,6 +82,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="card">
                 @if (isset($response))
                 <div class="card-header">{{ __('Response') }}</div>
@@ -89,18 +90,26 @@
                 <div class="card-body">
                     @if ( $response['code'] === 200)
                     <h3>Animal created</h3>
-                    <div class="card" style="width: 18rem; margin: 1rem;">
-
-                        <h5 class="card-header">Id: <?= $response['animal']->id ?></h5>
+                    <div class="card d-flex justify-content-center" style="width: 18rem; margin: 1rem;">
+                        <h5 class="card-header">ID: <?= $response['animal']->id ?></h5>
                         <div class="card-body">
-                            <h6 class="card-title">Name: <?= $response['animal']->name ?></h6>
+                            <p class="card-title">Name: <?= $response['animal']->name ?></p>
+                            <p class="card-title">Type ID: <?= $response['animal']->id_type ?></p>
+                            @if ( $response['animal']->id_breed)
+                            <p class="card-title">Breed ID: <?= $response['animal']->id_breed ?></p>
+                            @endif
                             <p class="card-text">Age: <?= $response['animal']->age ?></p>
-
+                            <p class="card-text">Owner ID: <?= $response['animal']->id_owner ?></p>
+                            <p class="card-text">Sex: <?= $response['animal']->sex ?></p>
+                            <p class="card-text">Location: <?= $response['animal']->location ?></p>
+                            <p class="card-text">Description: <?= $response['animal']->description ?></p>
+                            <p class="card-text">Prefered_photo: <?= $response['animal']->prefered_photo ?></p>
                         </div>
                     </div>
                     @else
-                    <h4><?= $response['error_msg'][0] ?></h4>
+                    <h4><?= $response['error_msg'] ?></h4>
                     @endif
+
                     <a href="{{ url('/') }}" class="btn btn-primary stretched-link">Go back</a>
                 </div>
             </div>
