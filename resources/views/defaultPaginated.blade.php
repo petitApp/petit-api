@@ -18,6 +18,7 @@
                         {{ $animal->name}}
                     </div>
 
+                    //BOTON PARA UPDATE
                     <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
                         <a href="{{ route('defaultPaginated', ['animals' => $responseAnimals['animals']]) }}">{{ $animal->id}}</a>
                     </div>
