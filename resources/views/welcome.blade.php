@@ -87,7 +87,9 @@
 
             <div class="links">
                 <a href="{{ url('/user/create') }}">Create user</a>
-                <a href="{{ url('/user/update') }}">Update user</a>
+                <a href="{{ url('/users/update') }}">Update user</a>
+                <a href="{{ url('/animal/create') }}">Create Animal</a>
+                <a href="{{ url('/animal/update') }}">Update Animal</a>
 
             </div>
 
@@ -96,7 +98,9 @@
             @else
             <div class="links">
                 <a href="{{ url('/user/create') }}">Create user</a>
-                <a href="{{ url('/user/update') }}">Update user</a>
+                <a href="{{ url('/users/update') }}">Update user</a>
+                <a href="{{ url('/animal/create') }}">Create Animal</a>
+                <a href="{{ url('/animal/update') }}">Update Animal</a>
 
             </div>
             @endguest

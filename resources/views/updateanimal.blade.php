@@ -5,7 +5,7 @@
 <div class="container">
     @if (isset($responseAnimals['msg']))
     <div class="alert alert-info">
-        <?= $responseUsers['msg'] ?>
+        <?= $responseAnimals['msg'] ?>
     </div>
 </div>
 @endif
@@ -60,50 +60,70 @@
 
         </div>
         <div class="card-body">
-            <!-- <form method="POST" action="{{ url('animal/update') }}">
+            <form method="POST" action="{{ url('animal/update') }}">
                 @csrf
                 <div class="form-group row">
-                    <label for="id" class="col-md-4 col-form-label text-md-right">Animal ID</label>
-                    <div class="col-md-6">
-                        <input id="id" type="number" class="form-control" name="id" required>
-                    </div>
-                </div>
+                            <label for="id" class="col-md-4 col-form-label text-md-right">Id</label>
+                            <div class="col-md-6">
+                                <input id="id" type="number" class="form-control" name="id" required autofocus>
+                            </div>
+                        </div>
                 <div class="form-group row">
-                    <label for="user_name" class="col-md-4 col-form-label text-md-right">{{ __('Animal Name') }}</label>
-                    <div class="col-md-6">
-                        <input id="user_name" type="text" class="form-control" name="name">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Owner ID') }}</label>
-                    <div class="col-md-6">
-                        <input id="email" type="email" class="form-control " name="owner_id">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Animal Age') }}</label>
-                    <div class="col-md-6">
-                        <input id="password" type="password" class="form-control " name="age">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
-                    <div class="col-md-6">
-                        <input id="location" type="text" class="form-control" name="location">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="picture" class="col-md-4 col-form-label text-md-right">Sex</label>
-                    <div class="col-md-6">
-                        <input id="picture" type="text" class="form-control" name="sex">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="picture" class="col-md-4 col-form-label text-md-right">Picture</label>
-                    <div class="col-md-6">
-                        <input id="picture" type="text" class="form-control" name="picture">
-                    </div>
-                </div>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control" name="name" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="id_owner" class="col-md-4 col-form-label text-md-right">Owner id</label>
+                            <div class="col-md-6">
+                                <input id="id_owner" type="number" class="form-control" name="id_owner" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="id_type" class="col-md-4 col-form-label text-md-right">Type</label>
+                            <div class="col-md-6">
+                                <select id="id_type" class="form-control" name="id_type">
+                                    <option value="1">Dog</option>
+                                    <option value="2">Cat</option>
+                                    <option value="3">Other</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="sex" class="col-md-4 col-form-label text-md-right">Sex</label>
+                            <div class="col-md-6">
+                                <select id="sex" class="form-control" name="sex">
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="age" class="col-md-4 col-form-label text-md-right">Age</label>
+                            <div class="col-md-6">
+                                <input id="age" type="number" class="form-control" name="age" required  autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
+                            <div class="col-md-6">
+                                <input id="location" type="text" class="form-control" name="location" required  autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+                            <div class="col-md-6">
+                                <input id="description" type="text" class="form-control" name="description" required  autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="prefered_photo" class="col-md-4 col-form-label text-md-right">Prefered photo</label>
+                            <div class="col-md-6">
+                                <input id="prefered_photo" type="file" class="form-control" name="prefered_photo" required  autofocus>
+                            </div>
+                        </div>
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <button type="submit" class="btn btn-primary">
@@ -111,7 +131,7 @@
                         </button>
                     </div>
                 </div>
-            </form> -->
+            </form>
         </div>
 
     </div>

@@ -22,9 +22,7 @@ Route::get('/user/create', function () {
 Route::get('/animal/create', function () {
     return view('createanimal');
 });
-Route::get('/animal/update', function () {
-    return view('updateanimal');
-});
+
 
 Auth::routes();
 
@@ -38,6 +36,7 @@ Route::get('/users/update', 'UserControllerAdmin@getUsers');
 
 
 Route::post('/user/update', 'UserControllerAdmin@updateUser');
+Route::post('/animal/update', 'AnimalControllerAdmin@updateAnimalAdmin');
 
 
 //ADMIN - ANIMALS ROUTES

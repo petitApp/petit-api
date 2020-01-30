@@ -62,7 +62,7 @@ class UserControllerAdmin extends Controller
         } else {
             $msg = 'Nothing to update';
         }
-        $users = User::all();
+        $users = User::orderBy('id', 'asc')->paginate(5)->onEachSide(2);
         $response = array('code' => 200, 'users' => $users, 'msg' => $msg);
         // return response()->json($response);
         return view('updateuser', ['responseUsers' => $response]);
@@ -108,7 +108,7 @@ class UserControllerAdmin extends Controller
     public function getUsers()
     {
         try{
-            $users = User::orderBy('id', 'asc')->paginate(2)->onEachSide(2);
+            $users = User::orderBy('id', 'asc')->paginate(5)->onEachSide(2);
             $response = array('code' => 200, 'users' => $users);
         } catch (\Exception $exception){
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());

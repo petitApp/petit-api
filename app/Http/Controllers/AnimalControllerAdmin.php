@@ -13,7 +13,7 @@ class AnimalControllerAdmin extends Controller
     {
         $response = array('code' => 400, 'error_msg' => []);
         try {
-            $animals = Animals::orderBy('id', 'asc')->paginate(2)->onEachSide(2);
+            $animals = Animals::orderBy('id', 'asc')->paginate(5)->onEachSide(2);
             if (count($animals) > 0) {
                 $response = array('code' => 200, 'animals' => $animals);
             } else {
@@ -62,5 +62,31 @@ class AnimalControllerAdmin extends Controller
         return view('createanimal', ['response' => $response]);
 
     }
+    public function updateAnimalAdmin(Request $request)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        $animal = Animals::find($request->id);
+        if (isset($request) && !empty($animal)) {
+            try {
+                $animal->name = $request->name ? $request->name : $animal->name;
+                $animal->id_type = $request->id_type ? $request->id_type : $animal->id_type;
+                $animal->sex = $request->sex ? $request->sex : $animal->sex;
+                $animal->age = $request->age ? $request->age : $animal->age;
+                $animal->location = $request->location ? $request->location : $animal->location;
+                $animal->description = $request->description ? $request->description : $animal->description;
+                $animal->prefered_photo = $request->prefered_photo ? $request->prefered_photo : $animal->prefered_photo;
+                $animal->id_breed = $request->id_breed ? $request->id_breed : $animal->id_breed;
+                $animal->save();
+                $response = array('code' => 200, 'msg' => 'Animal updated');
+            } catch (\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        } else {
+            $response['error_msg'] = 'Nothing to update';
+        }$animals = Animals::orderBy('id', 'asc')->paginate(5)->onEachSide(2);
+        $response["animals"] = $animals;
+      
+        return view('updateanimal', ['responseAnimals' => $response]);
 
+    }
 }
