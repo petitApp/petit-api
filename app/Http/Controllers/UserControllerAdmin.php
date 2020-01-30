@@ -107,9 +107,13 @@ class UserControllerAdmin extends Controller
 
     public function getUsers()
     {
-        $users = User::orderBy('id', 'asc')->paginate(10)->onEachSide(2);
-        $response = array('code' => 200, 'users' => $users);
-        // return response()->json($response);
+        try{
+            $users = User::orderBy('id', 'asc')->paginate(2)->onEachSide(2);
+            $response = array('code' => 200, 'users' => $users);
+        } catch (\Exception $exception){
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+
         return view('updateuser', ['responseUsers' => $response]);
     }
 }

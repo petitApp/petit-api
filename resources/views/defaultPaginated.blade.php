@@ -10,38 +10,46 @@
                 New animal
             </a>
         </div>
-    
-    @foreach ($animals as $item)
-        <div class="row">
-            <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
-                {{ $item->name}}
-            </div>
+        
+        @if(isset($responseAnimals) && $responseAnimals['code']===200)
+            @foreach ($responseAnimals['animals'] as $animal)
+                <div class="row">
+                    <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
+                        {{ $animal->name}}
+                    </div>
 
-            <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
-                <a href="{{ route('defaultPaginated', ['animals' => $animals]) }}">{{ $item->id}}</a>
-            </div>
+                    <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
+                        <a href="{{ route('defaultPaginated', ['animals' => $responseAnimals['animals']]) }}">{{ $animal->id}}</a>
+                    </div>
 
-            <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
-                {{ $item->id_owner}}
-            </div>
+                    <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
+                        {{ $animal->id_owner}}
+                    </div>
 
-            <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
-                {{ $item->age}}
-            </div>
+                    <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
+                        {{ $animal->age}}
+                    </div>
 
-            <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
-                {{ $item->sex}}
-            </div>
+                    <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
+                        {{ $animal->sex}}
+                    </div>
 
-            <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
-                {{ $item->location}}
+                    <div class="col border border-primary rounded mb-2 text-center d-flex justify-content-center">
+                        {{ $animal->location}}
+                    </div>
+                </div>
+            @endforeach
+
+            <div class="d-flex justify-content-center">
+                {{ $responseAnimals['animals']->links() }}
             </div>
-        </div>
-    @endforeach
+        @else
+            <div class="d-flex justify-content-center text-danger">
+                Fallo en la conexión
+            </div>
+        @endif 
     </div>
+        
     
-    <div class="d-flex justify-content-center">
-        {{ $animals->links()}}
-    </div>
 
 @endsection

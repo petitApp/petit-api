@@ -130,12 +130,17 @@ class AnimalController extends Controller
         }
         return view('updateanimal', ['responseAnimals' => $response]);
 
+    //Paginated request of all animals (Administrator) 
     public function getAllAnimalsPaginated() 
     {
-        //$animals = Animals::all(['id', 'name', 'id_owner', 'id_type', 'sex', 'age', 'location', 'description', 'prefered_photo', 'id_breed']);
-        $animals = Animals::orderBy('id', 'asc')->paginate(2)->onEachSide(2);
+        try {
+            $animals = Animals::orderBy('id', 'asc')->paginate(10)->onEachSide(2);
+            $response = array('code' => 200, 'animals' => $animals);
+        } catch(\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
 
-        return view('defaultPaginated', compact('animals'));        
+        return view('defaultPaginated',['responseAnimals' => $response]);        
     }
 
 
