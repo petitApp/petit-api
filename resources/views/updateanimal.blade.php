@@ -10,7 +10,7 @@
 </div>
 @endif
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="card">
             <div class="card-header">{{ __('Update Animal') }}</div>
             <div class="table-responsive">
@@ -47,35 +47,43 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                <div class="d-flex justify-content-center">
+                    {{ $responseAnimals['animals']->links() }}
+                </div>
+                @else
+                <div class="d-flex justify-content-center text-danger">
+                    Fallo en la conexión
+                </div>
                 @endif
             </div>
 
         </div>
         <div class="card-body">
-            <!-- <form method="POST" action="{{ url('user/update') }}">
+            <!-- <form method="POST" action="{{ url('animal/update') }}">
                 @csrf
                 <div class="form-group row">
-                    <label for="id" class="col-md-4 col-form-label text-md-right">User Id</label>
+                    <label for="id" class="col-md-4 col-form-label text-md-right">Animal ID</label>
                     <div class="col-md-6">
                         <input id="id" type="number" class="form-control" name="id" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="user_name" class="col-md-4 col-form-label text-md-right">{{ __('User Name') }}</label>
+                    <label for="user_name" class="col-md-4 col-form-label text-md-right">{{ __('Animal Name') }}</label>
                     <div class="col-md-6">
-                        <input id="user_name" type="text" class="form-control" name="user_name">
+                        <input id="user_name" type="text" class="form-control" name="name">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Owner ID') }}</label>
                     <div class="col-md-6">
-                        <input id="email" type="email" class="form-control " name="email">
+                        <input id="email" type="email" class="form-control " name="owner_id">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Animal Age') }}</label>
                     <div class="col-md-6">
-                        <input id="password" type="password" class="form-control " name="password">
+                        <input id="password" type="password" class="form-control " name="age">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -85,27 +93,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="picture" class="col-md-4 col-form-label text-md-right">Sex</label>
+                    <div class="col-md-6">
+                        <input id="picture" type="text" class="form-control" name="sex">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="picture" class="col-md-4 col-form-label text-md-right">Picture</label>
                     <div class="col-md-6">
                         <input id="picture" type="text" class="form-control" name="picture">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="active" class="col-md-4 col-form-label text-md-right">Active</label>
-                    <div class="col-md-6">
-                        <select id="active" class="form-control" name="active">
-                            <option value="0">No</option>
-                            <option value="1" selected>Yes</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="admin_user" class="col-md-4 col-form-label text-md-right">Admin user</label>
-                    <div class="col-md-6">
-                        <select id="admin_user" class="form-control" name="admin_user">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
                     </div>
                 </div>
                 <div class="form-group row mb-0">
