@@ -32,6 +32,7 @@ Route::post('/user/password/reset', 'UserController@sendMail');
 // Route::middleware('auth:api')->put('/user/{id}', 'UserController@UpdateUser' );
 // Route::middleware('auth:api')->delete('/user/{id}', 'UserController@deleteUser' );
 
+//ANIMAL ROUTES
 Route::post('/animal', 'AnimalController@createAnimal' );
 Route::post('/animal/{id}', 'AnimalController@updateAnimal' );
 Route::get('/animal/{id}', 'AnimalController@getAnimal' );

@@ -32,18 +32,18 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 
-
-Route::post('/user', 'UserControllerAdmin@createUser');
+//ADMIN - USERS ROUTES
+Route::post('/user/create', 'UserControllerAdmin@createUser');
 Route::get('/users/update', 'UserControllerAdmin@getUsers');
-Route::get('/animal/update', 'AnimalController@getAnimals');
+
 
 Route::post('/user/update', 'UserControllerAdmin@updateUser');
 
 
+//ADMIN - ANIMALS ROUTES
+Route::post('/animal/create', 'AnimalControllerAdmin@createAnimalAdmin');
+Route::get('/animal/update', 'AnimalControllerAdmin@getAnimalsAdmin');
 
-Route::post('/animal/create', 'AnimalController@createAnimalAdmin');
 Route::post('/animal/{id}', 'AnimalController@updateAnimal');
 Route::get('/animal/{id}', 'AnimalController@getAnimal');
 Route::get('/animals', 'AnimalController@getAllAnimals');
-
-Route::get('/admin/animals', 'AnimalController@getAllAnimalsPaginated' )->name('defaultPaginated');
