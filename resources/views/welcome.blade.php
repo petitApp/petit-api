@@ -85,7 +85,11 @@
                 Petit Admin Panel
             </div>
 
-        
+            <div class="links">
+                <a href="{{ url('/user/create') }}">Create user</a>
+                <a href="{{ url('/user/update') }}">Update user</a>
+
+            </div>
 
             @guest
 
