@@ -42,6 +42,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-center">
+                    {{ $responseUsers['users']->links()}}
+                </div>
                 @endif
             </div>
 

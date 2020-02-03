@@ -5,9 +5,28 @@ namespace App\Http\Controllers;
 use App\Animals;
 use Illuminate\Http\Request;
 
-class AnimalController extends Controller
+class AnimalControllerAdmin extends Controller
 {
-    public function createAnimal(Request $request)
+
+    //Paginated request of all animals (Administrator)
+    public function getAnimalsAdmin()
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $animals = Animals::orderBy('id', 'asc')->paginate(5)->onEachSide(2);
+            if (count($animals) > 0) {
+                $response = array('code' => 200, 'animals' => $animals);
+            } else {
+                $response = array('code' => 404, 'error_msg' => ['animals not found']);
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return view('updateanimal', ['responseAnimals' => $response]);
+    }
+
+    //
+    public function createAnimalAdmin(Request $request)
     {
         $response = array('code' => 400, 'error_msg' => []);
         if (isset($request)) {
@@ -40,14 +59,14 @@ class AnimalController extends Controller
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
-       return response($response,$response['code']);
-    }
+        return view('createanimal', ['response' => $response]);
 
-    public function updateAnimal(Request $request, $id)
+    }
+    public function updateAnimalAdmin(Request $request)
     {
         $response = array('code' => 400, 'error_msg' => []);
-        $animal = Animals::find($id);
-        if (isset($request) && isset($id) && !empty($animal)) {
+        $animal = Animals::find($request->id);
+        if (isset($request) && !empty($animal)) {
             try {
                 $animal->name = $request->name ? $request->name : $animal->name;
                 $animal->id_type = $request->id_type ? $request->id_type : $animal->id_type;
@@ -64,58 +83,10 @@ class AnimalController extends Controller
             }
         } else {
             $response['error_msg'] = 'Nothing to update';
-        }
-       return response($response,$response['code']);
-    }
+        }$animals = Animals::orderBy('id', 'asc')->paginate(5)->onEachSide(2);
+        $response["animals"] = $animals;
+      
+        return view('updateanimal', ['responseAnimals' => $response]);
 
-    public function getAnimal($id)
-    {
-        $response = array('code' => 400, 'error_msg' => []);
-        if (isset($id)) {
-            try {
-                $animal = Animals::find($id);
-            } catch (\Exception $exception) {
-                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-            }
-            if ($animal!==null) {
-                $response = array('code' => 200, 'animal' => $animal);
-            } else {
-                $response = array('code' => 404, 'error_msg' => ['Animal not found']);
-            }
-        }
-       return response($response,$response['code']);
     }
-    
-    public function deleteAnimal(Request $request, $id)
-    {
-        $animal = Animals::find($id);
-        if (!empty($animal)  && $request->user('api')->admin_user === 1) {
-            try {
-                $animal->delete();
-                $response = array('code' => 200, 'msg' => 'Animal deleted');
-            } catch (\Exception $exception) {
-                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-            }
-        } else {
-            $response = array('code' => 401, 'error_msg' => 'Unautorized');
-        }
-       return response($response,$response['code']);
-    }
-
-    public function getAllAnimals()
-    {
-        $response = array('code' => 400, 'error_msg' => []);
-        try {
-            $animals = Animals::all(['id', 'name', 'id_owner', 'id_type', 'sex', 'age', 'location', 'description', 'prefered_photo', 'id_breed']);
-            if (count($animals) > 0) {
-                $response = array('code' => 200, 'animals' => $animals);
-            } else {
-                $response = array('code' => 404, 'error_msg' => ['animals not found']);
-            }
-        } catch (\Exception $exception) {
-            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-        }
-       return response($response,$response['code']);
-    }
-
 }
