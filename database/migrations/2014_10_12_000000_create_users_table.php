@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('user_name')->nullable();
-            $table->string('location')->nullable();
+            $table->Decimal('latitude', 12, 7)->nullable();
+            $table->Decimal('longitude', 12, 7)->nullable();
             $table->string('picture')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('admin_user')->default('0');

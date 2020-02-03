@@ -16,11 +16,12 @@ class CreateAnimalsTable extends Migration
         Schema::create('animals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('id_type');
-            $table->unsignedBigInteger('id_breed')->nullable();
+            $table->string('type');
+            $table->string('breed')->nullable();
             $table->string('sex');
             $table->integer('age');
-            $table->string('location');
+            $table->decimal('latitude', 12, 7);
+            $table->decimal('longitude', 12, 7);
             $table->string('description');
             $table->boolean('available')->default('1');
             $table->string('prefered_photo');
@@ -33,8 +34,7 @@ class CreateAnimalsTable extends Migration
         Schema::table('animals', function($table) {
             $table->foreign('id_owner')->references('id')->on('users');
             $table->foreign('id_adopter')->references('id')->on('users');
-            $table->foreign('id_type')->references('id')->on('animals_types');
-            $table->foreign('id_breed')->references('id')->on('animal_breeds');
+  
         });
     }
 
