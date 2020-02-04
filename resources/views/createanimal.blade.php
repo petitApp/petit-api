@@ -23,9 +23,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="id_type" class="col-md-4 col-form-label text-md-right">Type</label>
+                            <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
                             <div class="col-md-6">
-                                <select id="id_type" class="form-control" name="id_type">
+                                <select id="type" class="form-control" name="type">
                                     <option value="1">Dog</option>
                                     <option value="2">Cat</option>
                                     <option value="3">Other</option>
@@ -94,9 +94,9 @@
                         <h5 class="card-header">ID: <?= $response['animal']->id ?></h5>
                         <div class="card-body">
                             <p class="card-title">Name: <?= $response['animal']->name ?></p>
-                            <p class="card-title">Type ID: <?= $response['animal']->id_type ?></p>
-                            @if ( $response['animal']->id_breed)
-                            <p class="card-title">Breed ID: <?= $response['animal']->id_breed ?></p>
+                            <p class="card-title">Type ID: <?= $response['animal']->type ?></p>
+                            @if ( $response['animal']->breed)
+                            <p class="card-title">Breed ID: <?= $response['animal']->breed ?></p>
                             @endif
                             <p class="card-text">Age: <?= $response['animal']->age ?></p>
                             <p class="card-text">Owner ID: <?= $response['animal']->id_owner ?></p>

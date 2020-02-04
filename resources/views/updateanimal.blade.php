@@ -35,7 +35,7 @@
                         <tr scope="row">
                             <td>{{$animal->id}}</td>
                             <td>{{$animal->name}}</td>
-                            <td>{{$animal->id_type}}</td>
+                            <td>{{$animal->type}}</td>
                             <td>{{$animal->breed}}</td>
                             <td>{{$animal->sex}}</td>
                             <td>{{$animal->age}}</td>
@@ -81,9 +81,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="id_type" class="col-md-4 col-form-label text-md-right">Type</label>
+                            <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
                             <div class="col-md-6">
-                                <select id="id_type" class="form-control" name="id_type">
+                                <select id="type" class="form-control" name="type">
                                     <option value="1">Dog</option>
                                     <option value="2">Cat</option>
                                     <option value="3">Other</option>
