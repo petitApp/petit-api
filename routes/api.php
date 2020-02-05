@@ -1,38 +1,34 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API ROUTES - MOBILE DEVICES SERVICE
 |--------------------------------------------------------------------------
+| Pet It App
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| Api routes for the app functionalities.
 |
 */
 
-//USER ROUTES
+use Illuminate\Http\Request;
 
+//BASIC ROUTES & VIEWS
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//USER SERVICE
 Route::post('/user', 'UserController@createUser' );
 Route::post('/user/generateToken/{id}', 'UserController@generateToken' );
-Route::get('/users', 'UserController@getUsers' );
 Route::post('/user/login', 'UserController@loginUser' );
 Route::get('/user/{id}', 'UserController@getUser' );
-
 Route::post('/user/password/reset', 'UserController@sendMail');
-
 
 // Route::middleware('auth:api')->get('/user/{id}', 'UserController@getUser' );
 // Route::middleware('auth:api')->put('/user/{id}', 'UserController@UpdateUser' );
 // Route::middleware('auth:api')->delete('/user/{id}', 'UserController@deleteUser' );
 
-//ANIMAL ROUTES
+//ANIMAL SERVICE
 Route::post('/animal', 'AnimalController@createAnimal' );
 Route::post('/animal/{id}', 'AnimalController@updateAnimal' );
 Route::get('/animal/{id}', 'AnimalController@getAnimal' );
