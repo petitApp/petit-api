@@ -6,11 +6,14 @@ use App\Animals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+//Controller to manage all animals functionality from the app
 class AnimalController extends Controller
 {
+    //Create an animal with relative data
     public function createAnimal(Request $request)
     {   
         $response = array('code' => 400, 'error_msg' => []);
+
         if (isset($request)) {
             if (!$request->name) array_push($response['error_msg'], 'Name is required');
             if (!$request->type) array_push($response['error_msg'], 'Type is required');
@@ -25,6 +28,7 @@ class AnimalController extends Controller
             } else {
                 $path = $request->file('picture')->store("picture");
             };
+
             if (!count($response['error_msg']) > 0) { //cambiar esto
                 try {
                     $animal = new Animals();
@@ -45,16 +49,22 @@ class AnimalController extends Controller
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }
             }
+
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
+
        return response($response,$response['code']);
     }
 
+    //Modify fields of an specific animal by ID 
     public function updateAnimal(Request $request, $id)
     {
         $response = array('code' => 400, 'error_msg' => []);
+
+        //TODO - TRY CATCH??
         $animal = Animals::find($id);
+
         if (isset($request) && isset($id) && !empty($animal)) {
             try {
                 $animal->name = $request->name ? $request->name : $animal->name;
@@ -63,30 +73,40 @@ class AnimalController extends Controller
                 $animal->age = $request->age ? $request->age : $animal->age;
                 $animal->latitude = $request->latitude ? $request->latitude : $animal->latitude;
                 $animal->longitude = $request->longitude ? $request->longitude : $animal->longitude;
-
                 $animal->description = $request->description ? $request->description : $animal->description;
-                $animal->prefered_photo = $request->prefered_photo ? $request->prefered_photo : $animal->prefered_photo;
+
+                //TODO - Find another way 
+                if ($request->file('picture')) {
+                    $path = $request->file('picture')->store("picture");
+                    $animal->prefered_photo = $path;
+                }
+
+
                 $animal->breed = $request->breed ? $request->breed : $animal->breed;
                 $animal->save();
                 $response = array('code' => 200, 'msg' => 'Animal updated');
             } catch (\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
+
         } else {
             $response['error_msg'] = 'Nothing to update';
         }
        return response($response,$response['code']);
     }
 
+    //Get an specific animal by ID
     public function getAnimal($id)
     {
         $response = array('code' => 400, 'error_msg' => []);
+
         if (isset($id)) {
             try {
                 $animal = Animals::find($id);
             } catch (\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
+
             if ($animal!==null) {
                 $response = array('code' => 200, 'animal' => $animal);
             } else {
@@ -96,10 +116,13 @@ class AnimalController extends Controller
        return response($response,$response['code']);
     }
     
+    //Delete an specific user by ID
     public function deleteAnimal(Request $request, $id)
     {
+        //TODO - TRY CATCH??
         $animal = Animals::find($id);
-        if (!empty($animal)  && $request->user('api')->admin_user === 1) {
+
+        if (!empty($animal) && $request->user('api')->admin_user === 1) {
             try {
                 $animal->delete();
                 $response = array('code' => 200, 'msg' => 'Animal deleted');
@@ -109,12 +132,15 @@ class AnimalController extends Controller
         } else {
             $response = array('code' => 401, 'error_msg' => 'Unautorized');
         }
+
        return response($response,$response['code']);
     }
 
+    //Get all animals function
     public function getAllAnimals()
     {
         $response = array('code' => 400, 'error_msg' => []);
+
         try {
             $animals = Animals::all(['id', 'name', 'id_owner', 'type', 'sex', 'age', 'latitude', 'longitude', 'description', 'prefered_photo', 'breed']);
             if (count($animals) > 0) {
@@ -125,6 +151,7 @@ class AnimalController extends Controller
         } catch (\Exception $exception) {
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
+
        return response($response,$response['code']);
     }
 
