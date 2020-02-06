@@ -19,25 +19,36 @@ class UserControllerAdmin extends Controller
             if (!$request->user_name) array_push($response['error_msg'], 'User name is required');
             if (!count($response['error_msg']) > 0) {
                 
-                //TODO - TRY CATCH??
-                $user = User::where('email', '=', $request->email);
-                if (!$user->count()) {
-                    try {
-                        $user = new User();
-                        $user->email = $request->email;
-                        $user->password = hash('sha256', $request->password);
-                        $user->user_name = $request->user_name;
-                        $token = uniqid() . $user->email;
-                        $user->token = hash('sha256', $token);
-                        $user->save();
-                        $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
-                    } catch (\Exception $exception) {
-                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                //TODO - TO TEST
+                try {
+                    $user = User::where('email', '=', $request->email);
+
+                    if (!$user->count()) {
+                        try {
+                            $user = new User();
+                            $user->email = $request->email;
+                            $user->password = hash('sha256', $request->password);
+                            $user->user_name = $request->user_name;
+                            $token = uniqid() . $user->email;
+                            $user->token = hash('sha256', $token);
+                            $user->save();
+                            $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
+                        } catch (\Exception $exception) {
+                            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                        }
+
+                    } else {
+                        $response = array('code' => 400, 'error_msg' => "Email already registered");
                     }
-                } else {
-                    $response = array('code' => 400, 'error_msg' => "Email already registered");
+
+                } catch (\Throwable $th) {
+                    $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }
+
+            } else {
+                //MENSAJE DE ERROR = RELLENAR LOS CAMPOS REQUERIDOS
             }
+
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
@@ -48,24 +59,33 @@ class UserControllerAdmin extends Controller
     //Paginated update of an specific user
     public function updateUser(Request $request)
     {
-        //TODO - OTRO TRY CATCH??
-        $user = User::find($request->id);
-        if (isset($request) && !empty($user)) {
+        if (isset($request)) {
+            //TODO - TO TEST
             try {
-                $user->email = $request->email ? $request->email : $user->email;
-                $user->password = $request->password ? hash('sha256', $request->password) : $user->password;
-                $user->user_name = $request->user_name ? $request->user_name : $user->user_name;
-                $user->location = $request->location ? $request->location : $user->location;
-                $user->picture = $request->picture ? $request->picture : $user->picture;
-                $user->active = $request->active ? $request->active : $user->active;
-                $user->admin_user = $request->admin_user ? $request->admin_user : $user->admin_user;
-                $user->save();
-                $msg = 'User updated';
-            } catch (\Exception $exception) {
-                $msg = $exception->getMessage();
+                $user = User::find($request->id);
+
+                if (!empty($user)) {
+                    try {
+                        $user->email = $request->email ? $request->email : $user->email;
+                        $user->password = $request->password ? hash('sha256', $request->password) : $user->password;
+                        $user->user_name = $request->user_name ? $request->user_name : $user->user_name;
+                        $user->location = $request->location ? $request->location : $user->location;
+                        $user->picture = $request->picture ? $request->picture : $user->picture;
+                        $user->active = $request->active ? $request->active : $user->active;
+                        $user->admin_user = $request->admin_user ? $request->admin_user : $user->admin_user;
+                        $user->save();
+                        $msg = 'User updated';
+                    } catch (\Exception $exception) {
+                        $msg = $exception->getMessage();
+                    }
+                } else {
+                    $msg = 'Nothing to update';
+                }
+
+            } catch (\Throwable $th) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
-        } else {
-            $msg = 'Nothing to update';
+
         }
 
         //Pagination
@@ -104,17 +124,29 @@ class UserControllerAdmin extends Controller
     //Delete an specific user from a given id 
     public function deleteUser(Request $request, $id)
     {
-        //TRY CATCH??
-        $user = User::find($id);
-        if (!empty($user)  && $request->user('api')->admin_user === 1) {
+        //TODO - TO TEST
+        if (isset($request) && isset($id)) {
+
             try {
-                $user->delete();
-                $response = array('code' => 200, 'msg' => 'User deleted');
-            } catch (\Exception $exception) {
+                $user = User::find($id);
+
+                if (!empty($user) && $request->user('api')->admin_user === 1) {
+                    try {
+                        $user->delete();
+                        $response = array('code' => 200, 'msg' => 'User deleted');
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
+                } else {
+                    $response = array('code' => 401, 'error_msg' => 'Unautorized');
+                }
+
+            } catch (\Throwable $th) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
+
         } else {
-            $response = array('code' => 401, 'error_msg' => 'Unautorized');
+            $response['error_msg'] = 'Nothing to create';
         }
 
         return response()->json($response);
