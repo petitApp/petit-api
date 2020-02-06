@@ -62,36 +62,47 @@ class AnimalController extends Controller
     {
         $response = array('code' => 400, 'error_msg' => []);
 
-        //TODO - TRY CATCH??
-        $animal = Animals::find($id);
-
-        if (isset($request) && isset($id) && !empty($animal)) {
+        if (isset($request) && isset($id)) {
+            //TODO - TO TEST
             try {
-                $animal->name = $request->name ? $request->name : $animal->name;
-                $animal->type = $request->type ? $request->type : $animal->type;
-                $animal->sex = $request->sex ? $request->sex : $animal->sex;
-                $animal->age = $request->age ? $request->age : $animal->age;
-                $animal->latitude = $request->latitude ? $request->latitude : $animal->latitude;
-                $animal->longitude = $request->longitude ? $request->longitude : $animal->longitude;
-                $animal->description = $request->description ? $request->description : $animal->description;
+                $animal = Animals::find($id);
 
-                //TODO - Find another way 
-                if ($request->file('picture')) {
-                    $path = $request->file('picture')->store("picture");
-                    $animal->prefered_photo = $path;
+                if (!empty($animal)) {
+                    try {
+                        $animal->name = $request->name ? $request->name : $animal->name;
+                        $animal->type = $request->type ? $request->type : $animal->type;
+                        $animal->sex = $request->sex ? $request->sex : $animal->sex;
+                        $animal->age = $request->age ? $request->age : $animal->age;
+                        $animal->latitude = $request->latitude ? $request->latitude : $animal->latitude;
+                        $animal->longitude = $request->longitude ? $request->longitude : $animal->longitude;
+                        $animal->description = $request->description ? $request->description : $animal->description;
+        
+                        //TODO - Find another way 
+                        if ($request->file('picture')) {
+                            $path = $request->file('picture')->store("picture");
+                            $animal->prefered_photo = $path;
+                        }
+        
+        
+                        $animal->breed = $request->breed ? $request->breed : $animal->breed;
+                        $animal->save();
+                        $response = array('code' => 200, 'msg' => 'Animal updated');
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
+        
+                } else {
+                    $response['error_msg'] = 'No animal to update';
                 }
 
-
-                $animal->breed = $request->breed ? $request->breed : $animal->breed;
-                $animal->save();
-                $response = array('code' => 200, 'msg' => 'Animal updated');
-            } catch (\Exception $exception) {
+            } catch (\Throwable $th) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
-
-        } else {
+            
+        }  else {
             $response['error_msg'] = 'Nothing to update';
         }
+        
        return response($response,$response['code']);
     }
 
@@ -113,26 +124,34 @@ class AnimalController extends Controller
                 $response = array('code' => 404, 'error_msg' => ['Animal not found']);
             }
         }
+
        return response($response,$response['code']);
     }
     
     //Delete an specific user by ID
     public function deleteAnimal(Request $request, $id)
     {
-        //TODO - TRY CATCH??
-        $animal = Animals::find($id);
-
-        if (!empty($animal) && $request->user('api')->admin_user === 1) {
+        if (isset($request) && isset($id)) {
+            //TODO - TO TEST
             try {
-                $animal->delete();
-                $response = array('code' => 200, 'msg' => 'Animal deleted');
-            } catch (\Exception $exception) {
+                $animal = Animals::find($id);
+
+                if (!empty($animal) && $request->user('api')->admin_user === 1) {
+                    try {
+                        $animal->delete();
+                        $response = array('code' => 200, 'msg' => 'Animal deleted');
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
+                } else {
+                    $response = array('code' => 401, 'error_msg' => 'Unautorized');
+                }
+                
+            } catch (\Throwable $th) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
-        } else {
-            $response = array('code' => 401, 'error_msg' => 'Unautorized');
         }
-
+        
        return response($response,$response['code']);
     }
 
