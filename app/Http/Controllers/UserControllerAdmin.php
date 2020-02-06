@@ -46,7 +46,7 @@ class UserControllerAdmin extends Controller
                 }
 
             } else {
-                //MENSAJE DE ERROR = RELLENAR LOS CAMPOS REQUERIDOS
+                $response['error_msg'] = 'Please introduce the required data';
             }
 
         } else {

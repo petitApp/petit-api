@@ -46,7 +46,7 @@
             </div>
         @else
             <div class="d-flex justify-content-center text-danger">
-                Fallo en la conexión
+                No data to show
             </div>
         @endif 
     </div>

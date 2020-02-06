@@ -37,7 +37,8 @@ class AnimalControllerAdmin extends Controller
             if (!$request->type) array_push($response['error_msg'], 'Type is required');
             if (!$request->sex) array_push($response['error_msg'], 'Sex or gender is required');
             if (!$request->age) array_push($response['error_msg'], 'Age is required');
-            if (!$request->location) array_push($response['error_msg'], 'Location is required');
+            if (!$request->longitude) array_push($response['error_msg'], 'Longitude is required');
+            if (!$request->latitude) array_push($response['error_msg'], 'Latitude is required');
             if (!$request->description) array_push($response['error_msg'], 'Description is required');
             if (!$request->prefered_photo) array_push($response['error_msg'], 'Prefered_photo is required');
             if (!$request->id_owner) array_push($response['error_msg'], 'Owner id is required');
@@ -80,7 +81,6 @@ class AnimalControllerAdmin extends Controller
     {
         $response = array('code' => 400, 'error_msg' => []);
 
-        
         if (isset($request)){ 
 
             //TODO - TO TEST
@@ -93,7 +93,8 @@ class AnimalControllerAdmin extends Controller
                         $animal->type = $request->type ? $request->type : $animal->type;
                         $animal->sex = $request->sex ? $request->sex : $animal->sex;
                         $animal->age = $request->age ? $request->age : $animal->age;
-                        $animal->location = $request->location ? $request->location : $animal->location;
+                        $animal->latitude = $request->latitude ? $request->latitude : $animal->latitude;
+                        $animal->longitude = $request->longitude ? $request->longitude : $animal->longitude;
                         $animal->description = $request->description ? $request->description : $animal->description;
                         $animal->prefered_photo = $request->prefered_photo ? $request->prefered_photo : $animal->prefered_photo;
                         $animal->breed = $request->breed ? $request->breed : $animal->breed;

@@ -24,7 +24,8 @@
                             <th scope="col">Breed</th>
                             <th scope="col">Sex</th>
                             <th scope="col">Age</th>
-                            <th scope="col">Location</th>
+                            <th scope="col">Latitude</th>
+                            <th scope="col">Longitude</th>
                             <th scope="col">Description</th>
                             <th scope="col">Prefered_photo</th>
                             <th scope="col">Owner</th>
@@ -39,7 +40,8 @@
                             <td>{{$animal->breed}}</td>
                             <td>{{$animal->sex}}</td>
                             <td>{{$animal->age}}</td>
-                            <td>{{$animal->location}}</td>
+                            <td>{{$animal->latitude}}</td>
+                            <td>{{$animal->longitude}}</td>
                             <td>{{$animal->description}}</td>
                             <td>{{$animal->prefered_photo}}</td>
                             <td>{{$animal->id_owner}}</td>
@@ -53,7 +55,7 @@
                 </div>
                 @else
                 <div class="d-flex justify-content-center text-danger">
-                    Fallo en la conexión
+                    No data to show
                 </div>
                 @endif
             </div>
