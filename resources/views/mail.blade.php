@@ -10,4 +10,9 @@
         {{ $data["password"]}}
         </span>
     </div>
+
+    <div style="display:flex;height:12rem;width:auto;justify-content:center;">
+        <img src="{{ $message->embed(public_path() . '/images/Logo_01.png') }}" style="width: 12rem;" alt="Pet It App Logo" /> 
+    </div>
 </div>
+

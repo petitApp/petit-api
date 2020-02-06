@@ -2,17 +2,17 @@
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| WEB ROUTES - ADMIN - BASIC ROUTES & VIEWS
 |--------------------------------------------------------------------------
+| Pet It App
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Web routes for the admin panel functionalities.
 |
 */
 
 use Illuminate\Http\Request;
 
+//BASIC ROUTES & VIEWS
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,12 +23,8 @@ Route::get('/animal/create', function () {
     return view('createanimal');
 });
 
-
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-
 
 //ADMIN - USERS ROUTES
 Route::post('/user/create', 'UserControllerAdmin@createUser');

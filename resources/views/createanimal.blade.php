@@ -49,9 +49,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
+                            <label for="location" class="col-md-4 col-form-label text-md-right">Latitude</label>
                             <div class="col-md-6">
-                                <input id="location" type="text" class="form-control" name="location" required  autofocus>
+                                <input id="latitude" type="number" class="form-control" name="latitude" required  autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="location" class="col-md-4 col-form-label text-md-right">Longitude</label>
+                            <div class="col-md-6">
+                                <input id="longitude" type="number" class="form-control" name="longitude" required  autofocus>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -101,13 +107,15 @@
                             <p class="card-text">Age: <?= $response['animal']->age ?></p>
                             <p class="card-text">Owner ID: <?= $response['animal']->id_owner ?></p>
                             <p class="card-text">Sex: <?= $response['animal']->sex ?></p>
-                            <p class="card-text">Location: <?= $response['animal']->location ?></p>
+                            <!-- TODO - OJO CON LAS VARIABLES PARA ANIMALES QUE HAN CAMBIADO -->
+                            <p class="card-text">Longitude: <?= $response['animal']->longitude ?></p>
+                            <p class="card-text">Latitude: <?= $response['animal']->latitude ?></p>
                             <p class="card-text">Description: <?= $response['animal']->description ?></p>
                             <p class="card-text">Prefered_photo: <?= $response['animal']->prefered_photo ?></p>
                         </div>
                     </div>
                     @else
-                    <h4><?= $response['error_msg'] ?></h4>
+                    <h4><?= $response['error_msg'][0] ?></h4>
                     @endif
 
                     <a href="{{ url('/') }}" class="btn btn-primary stretched-link">Go back</a>
