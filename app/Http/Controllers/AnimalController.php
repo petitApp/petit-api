@@ -40,7 +40,6 @@ class AnimalController extends Controller
                     $animal->latitude = $request->latitude;
                     $animal->longitude = $request->longitude;
                     $animal->description = $request->description;
-                    $animal->prefered_photo = $request->prefered_photo;
                     $animal->prefered_photo = $path;
                     $animal->breed = $request->breed ? $request->breed : null;
                     $animal->save();
