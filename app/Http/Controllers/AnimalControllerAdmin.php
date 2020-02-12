@@ -40,7 +40,6 @@ class AnimalControllerAdmin extends Controller
             if (!$request->longitude) array_push($response['error_msg'], 'Longitude is required');
             if (!$request->latitude) array_push($response['error_msg'], 'Latitude is required');
             if (!$request->description) array_push($response['error_msg'], 'Description is required');
-            if (!$request->prefered_photo) array_push($response['error_msg'], 'Prefered_photo is required');
             if (!$request->id_owner) array_push($response['error_msg'], 'Owner id is required');
             if (!$request->file('picture')) {
                 array_push($response['error_msg'], 'Picture is required');
@@ -59,7 +58,6 @@ class AnimalControllerAdmin extends Controller
                     $animal->latitude = $request->latitude;
                     $animal->longitude = $request->longitude;
                     $animal->description = $request->description;
-                    $animal->prefered_photo = $request->prefered_photo;
                     $animal->prefered_photo = $path;
                     $animal->breed = $request->breed ? $request->breed : null;
                     $animal->save();

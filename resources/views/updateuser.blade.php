@@ -10,7 +10,7 @@
 </div>
 @endif
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col">
         <div class="card">
             <div class="card-header">{{ __('Update User') }}</div>
             <div class="table-responsive">
@@ -21,7 +21,6 @@
                             <th scope="col">Id </th>
                             <th scope="col">User Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Location</th>
                             <th scope="col">Picture</th>
                             <th scope="col">Active</th>
                             <th scope="col">Admin user</th>
@@ -34,7 +33,6 @@
                             <td>{{$user->id}}</td>
                             <td>{{$user->user_name}}</td>
                             <td>{{$user->email}}</td>
-                            <td>{{$user->location}}</td>
                             <td>{{$user->picture}}</td>
                             <td>{{$user->active}}</td>
                             <td>{{$user->admin_user}}</td>
@@ -42,15 +40,20 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-center">
-                    {{ $responseUsers['users']->links()}}
-                </div>
+               
                 @endif
             </div>
 
         </div>
+
+        
+        <div class="d-flex justify-content-center">
+                    {{ $responseUsers['users']->links()}}
+                </div>
+                
+
         <div class="card-body">
-            <form method="POST" action="{{ url('user/update') }}">
+            <form method="POST" enctype="multipart/form-data" action="{{ url('user/update') }}">
                 @csrf
                 <div class="form-group row">
                     <label for="id" class="col-md-4 col-form-label text-md-right">User Id</label>
@@ -77,18 +80,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
-                    <div class="col-md-6">
-                        <input id="location" type="text" class="form-control" name="location">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="picture" class="col-md-4 col-form-label text-md-right">Picture</label>
-                    <div class="col-md-6">
-                        <input id="picture" type="text" class="form-control" name="picture">
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="active" class="col-md-4 col-form-label text-md-right">Active</label>
                     <div class="col-md-6">
                         <select id="active" class="form-control" name="active">
@@ -104,6 +95,12 @@
                             <option value="0">No</option>
                             <option value="1">Yes</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="picture" class="col-md-4 col-form-label text-md-right">Picture</label>
+                    <div class="col-md-6">
+                        <input id="picture" type="file" class="form-control" name="picture">
                     </div>
                 </div>
                 <div class="form-group row mb-0">
