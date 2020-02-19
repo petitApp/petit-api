@@ -10,7 +10,7 @@
 </div>
 @endif
 <div class="row justify-content-center">
-    <div class="col-md-12">
+    <div class="col">
         <div class="card">
             <div class="card-header">{{ __('Update Animal') }}</div>
             <div class="table-responsive">
@@ -27,7 +27,7 @@
                             <th scope="col">Latitude</th>
                             <th scope="col">Longitude</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Prefered_photo</th>
+                            <th scope="col">Picture</th>
                             <th scope="col">Owner</th>
                         </tr>
                     </thead>
@@ -43,7 +43,7 @@
                             <td>{{$animal->latitude}}</td>
                             <td>{{$animal->longitude}}</td>
                             <td>{{$animal->description}}</td>
-                            <td>{{$animal->prefered_photo}}</td>
+                            <td>{{$animal->picture}}</td>
                             <td>{{$animal->id_owner}}</td>
                         </tr>
                         @endforeach
@@ -62,7 +62,7 @@
 
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url('animal/update') }}">
+            <form method="POST" enctype="multipart/form-data" action="{{ url('animal/update') }}">
                 @csrf
                 <div class="form-group row">
                             <label for="id" class="col-md-4 col-form-label text-md-right">Id</label>
@@ -121,9 +121,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="prefered_photo" class="col-md-4 col-form-label text-md-right">Prefered photo</label>
+                            <label for="picture" class="col-md-4 col-form-label text-md-right">Prefered photo</label>
                             <div class="col-md-6">
-                                <input id="prefered_photo" type="file" class="form-control" name="prefered_photo" required  autofocus>
+                                <input id="picture" type="file" class="form-control" name="picture" required  autofocus>
                             </div>
                         </div>
                 <div class="form-group row mb-0">

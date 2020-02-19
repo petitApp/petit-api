@@ -60,6 +60,13 @@ class UserControllerAdmin extends Controller
     public function updateUser(Request $request)
     {
         if (isset($request)) {
+
+            if (!$request->file('picture')) {
+                array_push($response['error_msg'], 'Picture is required');
+            } else {
+                $path = $request->file('picture')->store("picture");
+            };
+
             //TODO - TO TEST
             try {
                 $user = User::find($request->id);
@@ -69,8 +76,9 @@ class UserControllerAdmin extends Controller
                         $user->email = $request->email ? $request->email : $user->email;
                         $user->password = $request->password ? hash('sha256', $request->password) : $user->password;
                         $user->user_name = $request->user_name ? $request->user_name : $user->user_name;
-                        $user->location = $request->location ? $request->location : $user->location;
-                        $user->picture = $request->picture ? $request->picture : $user->picture;
+                        $user->latitude = $request->latitude ? $request->latitude : $user->latitude;
+                        $user->latitude = $request->longitude ? $request->longitude : $user->longitude;
+                        $user->picture = $path;
                         $user->active = $request->active ? $request->active : $user->active;
                         $user->admin_user = $request->admin_user ? $request->admin_user : $user->admin_user;
                         $user->save();

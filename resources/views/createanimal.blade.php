@@ -8,7 +8,7 @@
                 <div class="card-header">Create Animal</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ url('/animal/create') }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ url('/animal/create') }}">
                         @csrf
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
@@ -67,9 +67,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="prefered_photo" class="col-md-4 col-form-label text-md-right">Prefered photo</label>
+                            <label for="picture" class="col-md-4 col-form-label text-md-right">Prefered photo</label>
                             <div class="col-md-6">
-                                <input id="prefered_photo" type="file" class="form-control" name="prefered_photo" required  autofocus>
+                                <input id="picture" type="file" class="form-control" name="picture" required  autofocus>
                             </div>
                         </div>
                         
@@ -111,7 +111,7 @@
                             <p class="card-text">Longitude: <?= $response['animal']->longitude ?></p>
                             <p class="card-text">Latitude: <?= $response['animal']->latitude ?></p>
                             <p class="card-text">Description: <?= $response['animal']->description ?></p>
-                            <p class="card-text">Prefered_photo: <?= $response['animal']->prefered_photo ?></p>
+                            <p class="card-text">Picture: <?= $response['animal']->picture ?></p>
                         </div>
                     </div>
                     @else

@@ -28,7 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //ADMIN - USERS ROUTES
 Route::post('/user/create', 'UserControllerAdmin@createUser');
-Route::get('/users/update', 'UserControllerAdmin@getUsers');
+Route::get('/user/update', 'UserControllerAdmin@getUsers');
 
 
 Route::post('/user/update', 'UserControllerAdmin@updateUser');

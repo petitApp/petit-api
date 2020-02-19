@@ -5,10 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>Pet It App Panel</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url('images/Logo_01.png') }}"/>
 
     <!-- Styles -->
     <style>
@@ -74,20 +75,24 @@
             <a href="{{ url('/home') }}">Your Profile</a>
             @else
             <a href="{{ route('login') }}">Login</a>
-            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+            <!-- <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a> -->
 
             @endauth
         </div>
         @endif
 
         <div class="content">
+            <div style="height:10rem; width:100%;" clss="d-flex justify-content-center">
+                <img style="width:10rem; height:10rem;" src="/images/Logo_01.png"></img>
+            </div>
+
             <div class="title m-b-md">
                 Petit Admin Panel
             </div>
 
             <div class="links">
                 <a href="{{ url('/user/create') }}">Create user</a>
-                <a href="{{ url('/users/update') }}">Update user</a>
+                <a href="{{ url('/user/update') }}">Update user</a>
                 <a href="{{ url('/animal/create') }}">Create Animal</a>
                 <a href="{{ url('/animal/update') }}">Update Animal</a>
 
