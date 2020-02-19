@@ -37,4 +37,9 @@ Route::get('/animals', 'AnimalController@getAllAnimals' );
 
 //CHAT SERVICE
 Route::post('/chat/create', 'ChatContoller@createChat' );
-Route::get('/chat/get/{id}', 'ChatContoller@getChat' );
+Route::get('/chat/mesages/{id}', 'ChatContoller@getChat' );
+Route::post('/chat/add/message', 'ChatContoller@createMessage' );
+Route::get('/chat/user/{id}', 'ChatContoller@getAllUserChats' );
+Route::post('/chat/deactivate/{id}', 'ChatContoller@deactivateChat' );
+
+
