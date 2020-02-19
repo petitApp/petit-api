@@ -13,11 +13,13 @@ class CreateChatsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('chats');
         Schema::create('chats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_animal_owner');
             $table->unsignedBigInteger('id_adopter');
             $table->unsignedBigInteger('id_animal');
+            $table->unique(['id_animal_owner', 'id_adopter', 'id_animal']);
             $table->boolean('active')->default('1');
             $table->timestamps();
         });
