@@ -172,7 +172,7 @@ class AnimalController extends Controller
 
     public function getAnimalByType($type)
     {
- $response = array('code' => 400, 'error_msg' => []);
+        $response = array('code' => 400, 'error_msg' => []);
         if (isset($type)) {
            
             try {
@@ -193,6 +193,8 @@ class AnimalController extends Controller
         return response($response, $response['code']);
     }
 
+ 
+
     public function getAnimalByBreed($breed)
     {
         $response = array('code' => 400, 'error_msg' => []);
@@ -200,7 +202,7 @@ class AnimalController extends Controller
            
             try {
                 $animals = DB::table('animals')
-                    ->where('breed', '=', $breed)->get();
+                    ->where('breed', 'like', '%'.$breed.'%')->get();
                 if (count($animals) > 0) {
                     $response = array('code' => 200, 'animals' => $animals);
                 } else {
@@ -260,6 +262,37 @@ class AnimalController extends Controller
         }else{
             array_push($response['error_msg'], 'Distance is required');
         }
+        return response($response, $response['code']);
+    }
+
+    public function getFilterAnimal(Request $request ){
+        $response = array('code' => 400, 'error_msg' => []);
+        $baseQuery=DB::table("animals");
+
+        try{
+            if($request->type){
+                $baseQuery->where('type', '=', $request->type);
+            }
+            if($request->breed){
+               $baseQuery->where('breed', 'like', '%'.$request->breed.'%' );
+            }
+            if($request->age){
+                $baseQuery->where('age', '=', $request->age );
+             }
+            if($request->distance && $request->longitude && $request->latitude){
+                $latitude = $request->latitude;
+                $longitude = $request->longitude;
+                $baseQuery->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+                        ->having('distance', '<', $request->distance)
+                        ->orderBy('distance');
+            }
+
+            $response = array('code' => 200, 'animals' => $animal = $baseQuery->get());
+
+        }catch(\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+       
         return response($response, $response['code']);
     }
 }
