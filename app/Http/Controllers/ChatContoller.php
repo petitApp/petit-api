@@ -45,7 +45,7 @@ class ChatContoller extends Controller
             try {
                 $chat = Chat::find($id);
                 if ($chat !== null) {
-                    $response = array('code' => 200, 'chat' => $chat->messages);
+                    $response = array('code' => 200, 'messages' => $chat->messages);
                 } else {
                     $response = array('code' => 404, 'error_msg' => ['chat not found']);
                 }
@@ -89,7 +89,7 @@ class ChatContoller extends Controller
         try {
             $chats = DB::table('chats')->where('id_adopter', $id)->orWhere('id_animal_owner', $id)->where('active', 1)->get();
             if (count($chats) > 0) {
-                $response = array('code' => 200, 'chats' => $chats);
+                $response = array('code' => 200, 'chat' => $chats);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['chats not found']);
             }
