@@ -286,8 +286,9 @@ class AnimalController extends Controller
                         ->having('distance', '<', $request->distance)
                         ->orderBy('distance');
             }
-
-            $response = array('code' => 200, 'animals' => $animal = $baseQuery->get());
+            $animals=$baseQuery->get();
+            
+            $response = array('code' => 200, 'animals' =>  $animals);
 
         }catch(\Exception $exception) {
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
