@@ -174,7 +174,6 @@ class AnimalController extends Controller
     {
         $response = array('code' => 400, 'error_msg' => []);
         if (isset($type)) {
-           
             try {
                 $animals = DB::table('animals')
                     ->where('type', '=', $type)->get();

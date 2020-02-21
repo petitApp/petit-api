@@ -41,3 +41,8 @@ Route::get('/animals/distance/{latitude}/{longitude}/{distance}', 'AnimalControl
 Route::get('/animals/filtered', 'AnimalController@getFilterAnimal' );
 
 
+//FAVORITES SERVICE
+Route::post('/add/favorite', 'FavoritesController@createFavoriteAnimal');
+Route::get('/favorites', 'FavoritesController@getAllFavoritesByUser');
+Route::delete('/delete/favorite', 'FavoritesController@deleteFavoriteAnimal');
+
