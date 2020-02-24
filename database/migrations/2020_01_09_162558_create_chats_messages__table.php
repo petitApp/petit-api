@@ -13,15 +13,17 @@ class CreateChatsMessagesTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('chats_messages');
+        
         Schema::create('chats_messages', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('message');
-            $table->unsignedBigInteger('id_chat');
+            $table->unsignedBigInteger('chat_id');
             $table->unsignedBigInteger('id_owner_message');
             $table->timestamps();
         });
         Schema::table('chats_messages', function($table) {
-            $table->foreign('id_chat')->references('id')->on('chats');
+            $table->foreign('chat_id')->references('id')->on('chats');
             $table->foreign('id_owner_message')->references('id')->on('users');
 
         });
