@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Animals;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
 
 //Controller to manage all animals functionality from the app
 class AnimalController extends Controller
 {
     //Create an animal with relative data
     public function createAnimal(Request $request)
-    {   
+    {
         $response = array('code' => 400, 'error_msg' => []);
 
         if (isset($request)) {
@@ -48,12 +50,11 @@ class AnimalController extends Controller
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }
             }
-
         } else {
             $response['error_msg'] = 'Nothing to create';
         }
 
-       return response($response,$response['code']);
+        return response($response, $response['code']);
     }
 
     //Modify fields of an specific animal by ID 
@@ -75,34 +76,31 @@ class AnimalController extends Controller
                         $animal->latitude = $request->latitude ? $request->latitude : $animal->latitude;
                         $animal->longitude = $request->longitude ? $request->longitude : $animal->longitude;
                         $animal->description = $request->description ? $request->description : $animal->description;
-        
+
                         //TODO - Find another way 
                         if ($request->file('picture')) {
                             $path = $request->file('picture')->store("picture");
                             $animal->prefered_photo = $path;
                         }
-        
-        
+
+
                         $animal->breed = $request->breed ? $request->breed : $animal->breed;
                         $animal->save();
                         $response = array('code' => 200, 'msg' => 'Animal updated');
                     } catch (\Exception $exception) {
                         $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                     }
-        
                 } else {
                     $response['error_msg'] = 'No animal to update';
                 }
-
             } catch (\Throwable $th) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
-            
-        }  else {
+        } else {
             $response['error_msg'] = 'Nothing to update';
         }
-        
-       return response($response,$response['code']);
+
+        return response($response, $response['code']);
     }
 
     //Get an specific animal by ID
@@ -117,16 +115,16 @@ class AnimalController extends Controller
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
 
-            if ($animal!==null) {
+            if ($animal !== null) {
                 $response = array('code' => 200, 'animal' => $animal);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['Animal not found']);
             }
         }
 
-       return response($response,$response['code']);
+        return response($response, $response['code']);
     }
-    
+
     //Delete an specific user by ID
     public function deleteAnimal(Request $request, $id)
     {
@@ -145,13 +143,12 @@ class AnimalController extends Controller
                 } else {
                     $response = array('code' => 401, 'error_msg' => 'Unautorized');
                 }
-                
             } catch (\Throwable $th) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
         }
-        
-       return response($response,$response['code']);
+
+        return response($response, $response['code']);
     }
 
     //Get all animals function
@@ -170,7 +167,133 @@ class AnimalController extends Controller
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
 
-       return response($response,$response['code']);
+        return response($response, $response['code']);
     }
 
+    public function getAnimalByType($type)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        if (isset($type)) {
+           
+            try {
+                $animals = DB::table('animals')
+                    ->where('type', '=', $type)->get();
+                if (count($animals) > 0) {
+                    $response = array('code' => 200, 'animals' => $animals);
+                } else {
+                    $response = array('code' => 404, 'error_msg' => ['animals not found']);
+                }
+            } catch (\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+           
+        }else{
+
+        } 
+        return response($response, $response['code']);
+    }
+
+ 
+
+    public function getAnimalByBreed($breed)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        if (isset($breed)) {
+           
+            try {
+                $animals = DB::table('animals')
+                    ->where('breed', 'like', '%'.$breed.'%')->get();
+                if (count($animals) > 0) {
+                    $response = array('code' => 200, 'animals' => $animals);
+                } else {
+                    $response = array('code' => 404, 'error_msg' => ['animals not found']);
+                }
+            } catch (\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }
+        else{
+            array_push($response['error_msg'], 'Breed is required');
+        }
+        return response($response, $response['code']);
+    }
+
+    public function getAnimalByAge($age)
+    {  
+        $response = array('code' => 400, 'error_msg' => []);
+        if (isset($age)) {
+          
+            try {
+                $animals = DB::table('animals')
+                    ->where('age', '=', $age)->get();
+                if (count($animals) > 0) {
+                    $response = array('code' => 200, 'animals' => $animals);
+                } else {
+                    $response = array('code' => 404, 'error_msg' => ['animals not found']);
+                }
+            } catch (\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+            
+        }else{
+            array_push($response['error_msg'], 'Age is required');
+        }
+        return response($response, $response['code']);
+    }
+    public function getAnimalByDistance($latitude, $longitude, $distance)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        
+        if (isset($latitude) && isset($longitude) && isset($distance)) {
+            try {
+
+                $animals = Animals::selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+                    ->having('distance', '<', $distance)
+                    ->orderBy('distance')
+                    ->get();
+                if (count($animals) > 0) {
+                    $response = array('code' => 200, 'animals' => $animals);
+                } else {
+                    $response = array('code' => 404, 'error_msg' => ['animals not found']);
+                }
+            } catch (\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }else{
+            array_push($response['error_msg'], 'Distance is required');
+        }
+        return response($response, $response['code']);
+    }
+
+    public function getFilterAnimal(Request $request ){
+        $response = array('code' => 400, 'error_msg' => []);
+        $baseQuery=DB::table("animals");
+
+        try{
+            if($request->type){
+                $baseQuery->where('type', '=', $request->type);
+            }
+            if($request->breed){
+               $baseQuery->where('breed', 'like', '%'.$request->breed.'%' );
+            }
+            if($request->age){
+                $baseQuery->where('age', '=', $request->age );
+             }
+            if($request->distance && $request->longitude && $request->latitude){
+                $latitude = $request->latitude;
+                $longitude = $request->longitude;
+                $baseQuery->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+                        ->having('distance', '<', $request->distance)
+                        ->orderBy('distance');
+            }
+            $animals=$baseQuery->get();
+            
+            $response = array('code' => 200, 'animals' =>  $animals);
+
+        }catch(\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+       
+        return response($response, $response['code']);
+    }
 }

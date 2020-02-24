@@ -8,8 +8,6 @@ class Animals extends Model
 {
     
         protected $casts = [
-            'longitude' => 'double',
-            'latitude' => 'double',
             'id_owner'=>'int',
             'age'=>'int',
         ];
