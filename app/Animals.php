@@ -1,0 +1,15 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Animals extends Model
+{
+    
+        protected $casts = [
+            'id_owner'=>'int',
+            'age'=>'int',
+        ];
+    
+}

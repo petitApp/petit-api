@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function petsFavorites()
+    {
+        return $this->belongsToMany('App\Animals', 'user_favorites', 'id_user', 'id_animal');
+    }
 }
