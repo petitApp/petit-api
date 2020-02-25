@@ -47,5 +47,10 @@ Route::get('/chat/mesages/{id}', 'ChatContoller@getChat' );
 Route::post('/chat/add/message', 'ChatContoller@createMessage' );
 Route::get('/chat/user/{id}', 'ChatContoller@getAllUserChats' );
 Route::post('/chat/deactivate/{id}', 'ChatContoller@deactivateChat' );
+//FAVORITES SERVICE
+Route::post('/add/favorite', 'FavoritesController@createFavoriteAnimal');
+Route::get('/favorites', 'FavoritesController@getAllFavoritesByUser');
+Route::delete('/delete/favorite', 'FavoritesController@deleteFavoriteAnimal');
+
 
 
