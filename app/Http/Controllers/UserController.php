@@ -54,6 +54,8 @@ class UserController extends Controller
                             $user->password = hash('sha256', $request->password);
                             $user->user_name = $request->user_name;
                             $token = uniqid() . $user->email;
+                            $user->latitude = $request->latitude ? $request->latitude : null;
+                            $user->longitude = $request->longitude ? $request->longitude : null;
                             $user->token = hash('sha256', $token);
                             $user->save();
                             $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
@@ -93,7 +95,8 @@ class UserController extends Controller
                         $user->email = $request->email ? $request->email : $user->email;
                         $user->password = $request->password ? hash('sha256', $request->password) : $user->password;
                         $user->user_name = $request->user_name ? $request->user_name : $user->user_name;
-                        $user->location = $request->location ? $request->location : $user->location;
+                        $user->latitude = $request->latitude ? $request->latitude : $user->latitude;
+                        $user->longitude = $request->longitude ? $request->longitude : $user->longitude;
                         $user->picture = $request->picture ? $request->picture : $user->picture;
                         $user->save();
                         $response = array('code' => 200, 'msg' => 'User updated');

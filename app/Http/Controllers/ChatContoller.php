@@ -45,7 +45,7 @@ class ChatContoller extends Controller
             try {
                 $chat = Chat::find($id);
                 if ($chat !== null) {
-                    $response = array('code' => 200, 'messages' => $chat->messages);
+                    $response = array('code' => 200, 'messages' => $chat->messages,  'owner' => $chat->creator,'adopter' => $chat->adopter);
                 } else {
                     $response = array('code' => 404, 'error_msg' => ['chat not found']);
                 }

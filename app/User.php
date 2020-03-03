@@ -41,4 +41,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Animals', 'user_favorites', 'id_user', 'id_animal');
     }
+
+  
 }
