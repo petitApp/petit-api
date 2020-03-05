@@ -30,20 +30,18 @@ class FavoritesController extends Controller
     {
         $response = array('code' => 400, 'error_msg' => []);
         try {
-            $favorite = User_Favorite::find($request->id);
-            if (!empty($favorite)) {
-                try {
-                    $favorite->delete();
-                    $response = array('code' => 200, 'animal' => $favorite, 'msg' => 'Favorite created');
-                } catch (\Exception $exception) {
-                    $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-                }
+            $user_favorite = DB::table('user_favorites')->where('id_animal', $request->id_animal)->where('id_user', $request->id_user)->get();
+            if (count($user_favorite) > 0) {
+                $user = User_Favorite::find($user_favorite[0]->id);
+                $user->delete();
+                $response = array('code' => 200, 'user_favorite' => $user_favorite);
             } else {
-                $response = array('code' => 401, 'error_msg' => 'Unautorized');
+                $response = array('code' => 404, 'error_msg' => ['user_favorite not found']);
             }
         } catch (\Exception $exception) {
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
+
         return response($response, $response['code']);
     }
 
