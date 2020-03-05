@@ -49,7 +49,7 @@ Route::get('/chat/user/{id}', 'ChatContoller@getAllUserChats' );
 Route::post('/chat/deactivate/{id}', 'ChatContoller@deactivateChat' );
 //FAVORITES SERVICE
 Route::post('/add/favorite', 'FavoritesController@createFavoriteAnimal');
-Route::get('/favorites', 'FavoritesController@getAllFavoritesByUser');
+Route::get('/favorites/{id}', 'FavoritesController@getAllFavoritesByUser');
 Route::delete('/delete/favorite', 'FavoritesController@deleteFavoriteAnimal');
 
 

@@ -47,11 +47,11 @@ class FavoritesController extends Controller
         return response($response, $response['code']);
     }
 
-    public function getAllFavoritesByUser(Request $request)
+    public function getAllFavoritesByUser($id)
     {
         $response = array('code' => 400, 'error_msg' => []);
         try {
-            $user = User::find($request->id_user);
+            $user = User::find($id);
             if (!empty($user)) {
                 $response = ['user_favorite' => $user->id, 'animals' => []];
                 $animals = $user->petsFavorites;
