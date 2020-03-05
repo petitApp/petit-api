@@ -26,19 +26,45 @@ Route::get('/animal/create', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-//ADMIN - USERS ROUTES
+/*--------- ADMIN - USERS ROUTES ---------*/
+
+//create an user
 Route::post('/user/create', 'UserControllerAdmin@createUser');
-Route::get('/user/update', 'UserControllerAdmin@getUsers');
+
+//All users
+Route::get('/users', 'UserControllerAdmin@getUsersAdmin');
+
+//Update an user by id
+Route::post('/user/{id}/update', 'UserControllerAdmin@updateUserById');
+//GET to populate an user data by a given ID.
+//Used before and after updating an animal in order to show feedback to the admin
+Route::get('/user/{id}/update', 'userControllerAdmin@getUserById');
 
 
-Route::post('/user/update', 'UserControllerAdmin@updateUser');
-Route::post('/animal/update', 'AnimalControllerAdmin@updateAnimalAdmin');
+//TODO
+//Rutas antiguas evaluarrr
+// Route::post('/user/update', 'UserControllerAdmin@updateUser');
+// Route::post('/animal/update', 'AnimalControllerAdmin@updateAnimalAdmin');
+// Route::get('/user/update', 'UserControllerAdmin@getUsers');
 
 
-//ADMIN - ANIMALS ROUTES
+/* --------- ADMIN - ANIMALS ROUTES --------- */
+ 
+//Create an animal 
 Route::post('/animal/create', 'AnimalControllerAdmin@createAnimalAdmin');
-Route::get('/animal/update', 'AnimalControllerAdmin@getAnimalsAdmin');
 
-Route::post('/animal/{id}', 'AnimalController@updateAnimal');
-Route::get('/animal/{id}', 'AnimalController@getAnimal');
-Route::get('/animals', 'AnimalController@getAllAnimals');
+//All animals
+Route::get('/animals', 'AnimalControllerAdmin@getAnimalsAdmin');
+
+//UPDATE an animal by ID 
+Route::post('animal/{id}/update', 'AnimalControllerAdmin@updateAnimalById');
+
+//GET to populate an animal data by a given ID. 
+//It is used before and after updating an animal in order to show feedback to the admin  
+Route::get('animal/{id}/update', 'AnimalControllerAdmin@getAnimalById');
+
+//TODO
+//Ruta antigua Comprobar validez actual
+// Route::post('/animal/{id}', 'AnimalController@updateAnimal');
+// Route::get('/animal/{id}', 'AnimalController@getAnimal');
+// Route::get('/animals', 'AnimalController@getAllAnimals');
