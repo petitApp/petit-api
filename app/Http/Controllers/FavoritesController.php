@@ -64,4 +64,27 @@ class FavoritesController extends Controller
         }
         return response($response, $response['code']);
     }
+
+    public function getOneFavoriteByUser(Request $request)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $user_favorite = DB::table('user_favorites')->where('id_animal', $request->id_animal)->where('id_user', $request->id_user)->get();
+            if (count($user_favorite) > 0) {
+                $response = array('code' => 200, 'user_favorite' => $user_favorite);
+            } else {
+                $response = array('code' => 404, 'error_msg' => ['user_favorite not found']);
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+
+        return response($response, $response['code']);
+
+        
+    }
+
+    
+
+    
 }

@@ -50,6 +50,7 @@ Route::post('/chat/deactivate/{id}', 'ChatContoller@deactivateChat' );
 //FAVORITES SERVICE
 Route::post('/add/favorite', 'FavoritesController@createFavoriteAnimal');
 Route::get('/favorites/{id}', 'FavoritesController@getAllFavoritesByUser');
+Route::get('/favorites', 'FavoritesController@getOneFavoriteByUser');
 Route::delete('/delete/favorite', 'FavoritesController@deleteFavoriteAnimal');
 
 
