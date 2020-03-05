@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Animals;
+use App\Animal_picture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,7 +43,13 @@ class AnimalController extends Controller
                     $animal->description = $request->description;
                     $animal->prefered_photo = $path;
                     $animal->breed = $request->breed ? $request->breed : null;
-                    $animal->save();
+                    $animal->save(); 
+
+                    //Check if array of pictures exists and it has values before adding the images
+                    if (!empty($request->images) && count($request->images) > 0){
+                        $this->addImages($animal, $request->images);
+                    }
+
                     $response = array('code' => 200, 'animal' => $animal, 'msg' => 'Animal created');
                 } catch (\Exception $exception) {
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
@@ -55,6 +62,28 @@ class AnimalController extends Controller
 
        return response($response,$response['code']);
     }
+
+    //Multiple files adding 
+    static public function addImages($animal, $images) {
+        $id = $animal->id;
+
+        //TODO - try catch? 
+        try {
+            foreach ($images as $image) {
+                $path = $image->store('picture');
+                $animal_picture = new Animal_picture();
+                $animal_picture->picture_url = $path;	
+                $animal_picture->id_animal = $id;
+                $animal_picture->save();
+            }   
+
+            $response = array('code' => 200, 'animalPictures' => $images);
+        } catch (\Throwable $th) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        
+    }
+
 
     //Modify fields of an specific animal by ID 
     public function updateAnimal(Request $request, $id)
@@ -81,11 +110,12 @@ class AnimalController extends Controller
                             $path = $request->file('picture')->store("picture");
                             $animal->prefered_photo = $path;
                         }
-        
-        
+
                         $animal->breed = $request->breed ? $request->breed : $animal->breed;
                         $animal->save();
                         $response = array('code' => 200, 'msg' => 'Animal updated');
+                        
+                        array('code' => 200, 'msg' => 'Animal updated');
                     } catch (\Exception $exception) {
                         $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                     }
