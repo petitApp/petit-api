@@ -18,16 +18,21 @@ class ChatContoller extends Controller
             if (!$request->id_adopter) array_push($response['error_msg'], 'Id adopter is required');
             if (!$request->id_animal) array_push($response['error_msg'], 'Id animal or gender is required');
             if (!count($response['error_msg']) > 0) {
-                try {
-                    $chat = new Chat();
-                    $chat->id_animal_owner = $request->id_animal_owner;
-                    $chat->id_adopter = $request->id_adopter;
-                    $chat->id_animal = $request->id_animal;
-                    $chat->save();
-                    $response = array('code' => 200, 'chat' => $chat, 'msg' => 'Chat created');
-                } catch (\Exception $exception) {
-                    $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                $chat = Chat::where('id_animal_owner', '=', $request->id_animal_owner)->where('id_adopter', '=', $request->id_adopter)
+                    ->where('id_animal', '=', $request->id_animal)->first();
+                if (!isset($chat)) {
+                    try {
+                        $chat = new Chat();
+                        $chat->id_animal_owner = $request->id_animal_owner;
+                        $chat->id_adopter = $request->id_adopter;
+                        $chat->id_animal = $request->id_animal;
+                        $chat->save();
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
                 }
+                $chat->receiver = $chat->owner;
+                $response = array('code' => 200, 'chat' => $chat, 'msg' => 'Chat found');
             }
         } else {
             $response['error_msg'] = 'Nothing to create';
@@ -45,7 +50,7 @@ class ChatContoller extends Controller
             try {
                 $chat = Chat::find($id);
                 if ($chat !== null) {
-                    $response = array('code' => 200, 'messages' => $chat->messages,  'owner' => $chat->creator,'adopter' => $chat->adopter);
+                    $response = array('code' => 200, 'messages' => $chat->messages,  'owner' => $chat->creator, 'adopter' => $chat->adopter);
                 } else {
                     $response = array('code' => 404, 'error_msg' => ['chat not found']);
                 }
@@ -89,7 +94,17 @@ class ChatContoller extends Controller
         try {
             $chats = DB::table('chats')->where('id_adopter', $id)->orWhere('id_animal_owner', $id)->where('active', 1)->get();
             if (count($chats) > 0) {
-                $response = array('code' => 200, 'chat' => $chats);
+                $chatArray = [];
+                foreach ($chats as $chat) {
+                    $chatData = Chat::find($chat->id);
+                    if ($id == $chatData->id_animal_owner) {
+                        $chatData->receiver = $chatData->adopter;
+                    } else {
+                        $chatData->receiver = $chatData->owner;
+                    }
+                    $chatArray[] = $chatData;
+                }
+                $response = array('code' => 200, 'chat' => $chatArray);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['chats not found']);
             }
@@ -106,9 +121,9 @@ class ChatContoller extends Controller
         try {
             $chat = Chat::find($id);
             if ($chat) {
-              $chat->active=0;
-              $chat->save();
-              $response = array('code' => 200, 'chat' => $chat);
+                $chat->active = 0;
+                $chat->save();
+                $response = array('code' => 200, 'chat' => $chat);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['chats not found']);
             }

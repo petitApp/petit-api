@@ -42,5 +42,15 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Animals', 'user_favorites', 'id_user', 'id_animal');
     }
 
+    public  function userChats()
+    {
+        return $this->hasMany("App\Chat", "id_animal_owner");
+    }
+
+    public  function userChats2()
+    {
+        return $this->hasMany("App\Chat", "id_adopter");
+    }
+
   
 }
