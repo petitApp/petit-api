@@ -53,7 +53,7 @@ class FavoritesController extends Controller
             if (!empty($user)) {
                 $response = ['user_favorite' => $user->id, 'animals' => []];
                 $animals = $user->petsFavorites;
-                return   $response = array('code' => 200, 'animal' => $animals, 'msg' => 'Favorite created');
+                return   $response = array('code' => 200, 'animals' => $animals, 'msg' => 'Favorite created');
             } else {
                 $response = array('code' => 401, 'error_msg' => 'Unautorized');
             }
@@ -67,9 +67,9 @@ class FavoritesController extends Controller
     {
         $response = array('code' => 400, 'error_msg' => []);
         try {
-            $user_favorite = DB::table('user_favorites')->where('id_animal', $request->id_animal)->where('id_user', $request->id_user)->get();
-            if (count($user_favorite) > 0) {
-                $response = array('code' => 200, 'user_favorite' => $user_favorite);
+            $user_favorite = User_Favorite::where('id_animal', $request->id_animal)->where('id_user', $request->id_user)->first();
+            if (isset($user_favorite)) {
+                $response = array('code' => 200, 'favorite' => $user_favorite);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['user_favorite not found']);
             }
