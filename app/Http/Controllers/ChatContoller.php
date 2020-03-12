@@ -16,7 +16,7 @@ class ChatContoller extends Controller
         if (isset($request)) {
             if (!$request->id_animal_owner) array_push($response['error_msg'], 'Id owner is required');
             if (!$request->id_adopter) array_push($response['error_msg'], 'Id adopter is required');
-            if (!$request->id_animal) array_push($response['error_msg'], 'Id animal or gender is required');
+            if (!$request->id_animal) array_push($response['error_msg'], 'Id animal or required');
             if (!count($response['error_msg']) > 0) {
                 $chat = Chat::where('id_animal_owner', '=', $request->id_animal_owner)->where('id_adopter', '=', $request->id_adopter)
                     ->where('id_animal', '=', $request->id_animal)->first();

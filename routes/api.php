@@ -22,6 +22,7 @@ Route::post('/user', 'UserController@createUser' );
 Route::post('/user/generateToken/{id}', 'UserController@generateToken' );
 Route::post('/user/login', 'UserController@loginUser' );
 Route::get('/user/one/{id}', 'UserController@getUser' );
+Route::put('/user/{id}', 'UserController@updateUser' );
 
 Route::post('/user/password/reset', 'UserController@sendMail');
 
