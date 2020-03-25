@@ -46,6 +46,10 @@ class User extends Authenticatable
     {
         return $this->hasMany("App\Chat", "id_animal_owner");
     }
+    public  function userPets()
+    {
+        return $this->hasMany("App\Animals", "id_owner");
+    }
 
     public  function userChats2()
     {

@@ -40,6 +40,7 @@ Route::get('/animals/breed/{breed}', 'AnimalController@getAnimalByBreed');
 Route::get('/animals/age/{age}', 'AnimalController@getAnimalByAge' );
 Route::get('/animals/distance/{latitude}/{longitude}/{distance}', 'AnimalController@getAnimalByDistance' );
 Route::get('/animals/filtered', 'AnimalController@getFilterAnimal' );
+Route::get('/animal/user/{id}', 'AnimalController@getUserAnimals' );
 
 
 //CHAT SERVICE

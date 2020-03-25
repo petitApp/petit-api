@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Animals;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -157,7 +158,8 @@ class AnimalController extends Controller
         $response = array('code' => 400, 'error_msg' => []);
 
         try {
-            $animals = Animals::all(['id', 'name', 'id_owner', 'type', 'sex', 'age', 'latitude', 'longitude', 'description', 'prefered_photo', 'breed']);
+            $animals = Animals::all(['id', 'name', 'id_owner', 'type', 'sex', 'age', 'latitude', 'longitude', 'description', 'prefered_photo', 'breed'])->sortByDesc("id");
+            $animals = Animals ::orderBy('id','desc')->get();
             if (count($animals) > 0) {
                 $response = array('code' => 200, 'animals' => $animals);
             } else {
@@ -285,7 +287,7 @@ class AnimalController extends Controller
                         ->having('distance', '<', $request->distance)
                         ->orderBy('distance');
             }
-            $animals=$baseQuery->get();
+            $animals=$baseQuery->orderBy('id', 'desc')->get();
             
             $response = array('code' => 200, 'animals' =>  $animals);
 
@@ -293,6 +295,27 @@ class AnimalController extends Controller
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
        
+        return response($response, $response['code']);
+    }
+
+    public function getUserAnimals($id)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+
+        if (isset($id)) {
+            try {
+                $user = User::find($id);
+            } catch (\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+
+            if (isset($user->userPets)) {
+                $response = array('code' => 200, 'animal' => $user->userPets);
+            } else {
+                $response = array('code' => 404, 'error_msg' => ['Animals not found']);
+            }
+        }
+
         return response($response, $response['code']);
     }
 }
