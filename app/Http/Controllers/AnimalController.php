@@ -310,7 +310,7 @@ class AnimalController extends Controller
             }
 
             if (isset($user->userPets)) {
-                $response = array('code' => 200, 'animal' => $user->userPets);
+                $response = array('code' => 200, 'animals' => $user->userPets);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['Animals not found']);
             }
