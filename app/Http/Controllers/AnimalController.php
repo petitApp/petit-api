@@ -47,10 +47,9 @@ class AnimalController extends Controller
 
                     //Check if array of pictures exists and it has values before adding the images
                     if (!empty($request->images) && count($request->images) > 0){
-                        $this->addImages($animal, $request->images);
+                        $response = $this->addImages($animal, $request->images);
                     }
 
-                    $response = array('code' => 200, 'animal' => $animal, 'msg' => 'Animal created');
                 } catch (\Exception $exception) {
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }
@@ -69,19 +68,26 @@ class AnimalController extends Controller
 
         //TODO - try catch? 
         try {
+            $newImages = array();
+
             foreach ($images as $image) {
                 $path = $image->store('picture');
                 $animal_picture = new Animal_picture();
                 $animal_picture->picture_url = $path;	
                 $animal_picture->id_animal = $id;
                 $animal_picture->save();
+
+                array_push($newImages, $path);
             }   
 
-            $response = array('code' => 200, 'animalPictures' => $images);
-        } catch (\Throwable $th) {
+            // die(print_r($newImages));
+
+            $response = array('code' => 200, 'animal' => $animal, 'msg' => 'Animal created', 'animalPictures' => $newImages);
+        } catch (\Throwable $exception) {
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
-        
+
+        return $response;
     }
 
 
@@ -114,8 +120,7 @@ class AnimalController extends Controller
                         $animal->breed = $request->breed ? $request->breed : $animal->breed;
                         $animal->save();
                         $response = array('code' => 200, 'msg' => 'Animal updated');
-                        
-                        array('code' => 200, 'msg' => 'Animal updated');
+
                     } catch (\Exception $exception) {
                         $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                     }

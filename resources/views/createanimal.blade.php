@@ -3,7 +3,7 @@
 @section('content')
 <div class="container" style="width:90%">
     <div class="card" style="background-color: var(--primary);border: 0;">
-    @if(isset($response) && $response['code']===200)
+    @if(isset($response) && $response['code'] == 200)
         @php
             $animal = $response['animal'];
         @endphp

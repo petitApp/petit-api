@@ -8,6 +8,12 @@
             $animal = $response['animal'];
         @endphp
 
+        @if (isset($response['animalPictures']))
+            @php
+            $animalPictures = $response['animalPictures'];
+            @endphp
+        @endif
+
         <div class="card w-100">
             <div class="card-header d-flex justify-content-center align-items-center" style="flex-direction: column;">
                 <h4>
@@ -159,24 +165,26 @@
                             </label>
                             <div class="col-md-6">
                                 <div class="card" style="width:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; overflow:hidden;">
-                                    @if (isset($animal->picture))
-                                        $count = count($animal->picture);
+                                    @if (isset($animalPictures))
                                         @php
-                                            die($animal->picture[1]);
+                                            $count = count($animalPictures);
                                         @endphp
-                                        @for($i=1;$i<=$count;$i++) {
+                                        @for($i=0;$i<=$count-1;$i++)
                                             <div class="card-header" style="width:100%;">
                                                 Animal image number {{$i + 1}}  
                                             </div>
-                                            <img style="height:10rem;width:100%;" src="/storage/{{$animal->picture[$i]}}" alt="image number {{$i}}"/>
-                                        };
-                                        @endfor        
+                                            <img style="height:10rem;width:100%;" src="/app/public/{{$animalPictures[$i]}}" alt="image number {{$i + 1}}"/>
+                                        @endfor  
+                                        <input name="images[]" id="inputImages" type="file" multiple="multiple" onChange="readMultipleURL(this)" style="border:0;display:flex;align-items:center;width: 90%;margin: 1rem 0;padding: 0;flex-direction: row;height: auto;justify-content: center; background-color:var(--primary); color: white" class="form-control" autofocus>
+                                        <div id="result" style="width:100%;height:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+                                        </div>
+                                              
                                     @else 
                                         <div class="card-header" style="width:100%;">
                                             Set more pictures  
                                         </div>
-                                        <input name="images[]" type="file" multiple="multiple" onChange="readMultipleURL(this)" style="border:0;display:flex;align-items:center;width: 90%;margin: 1rem 0;padding: 0;flex-direction: row;height: auto;justify-content: center; background-color:var(--primary); color: white" class="form-control" autofocus>       
-                                        <div id="upload_container" style="width:100%;height:auto;">
+                                        <input name="images[]" id="inputImages" type="file" multiple="multiple" onChange="readMultipleURL(this)" style="border:0;display:flex;align-items:center;width: 90%;margin: 1rem 0;padding: 0;flex-direction: row;height: auto;justify-content: center; background-color:var(--primary); color: white" class="form-control" autofocus>       
+                                        <div id="result" style="width:100%;height:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;">
                                         </div>
                                     @endif
                                 </div>
@@ -242,40 +250,38 @@
                             function readMultipleURL(input) {
                                 const totalImages = input.files.length;
                                 
-                                if (totalImages > 0) {
+
                                     var reader = new FileReader();
                                     console.log(input.files);
-                                    reader.onload = function (e) {
-                                        for (let i = 0; i < totalImages; i++) {
-                                            const element = input.files[i];
-                                            console.log('pito');
-                                            console.log(element);
-                                            console.log(e.target.result);
-                                            $('#upload_container').innerHTML += "<img id='#image_upload' + i + 1/>";
-                                            $('#image_upload' + i + 1)
-                                                .attr('src', e.target.result[i]);                                     
-                                        }
-                                        reader.readAsDataURL(input.files[0]);
-                                    };
 
-                                } 
+                                if (window.File && window.FileList && window.FileReader) {
+                                    var files = event.target.files; //FileList object
+                                    var output = document.getElementById("result");
+                                    output.innerHTML = "";
 
-
-                                    // onChange(e) {
-                                    //     let reader = new FileReader();
-                                    //     reader.onload = function(e) {
-                                    //         this.setState({file: reader.result})
-                                    //     }
-                                    //     reader.readAsDataURL(e.target.files[0]);
-                                    // }
+                                    for (var i = 0; i < files.length; i++) {
+                                        var file = files[i];
+                                        //Only pics
+                                        if (!file.type.match('image')) continue;
+                                            var reader = new FileReader();
+                                            reader.addEventListener("load", function (event) {
+                                                var picFile = event.target;
+                                                output.innerHTML += "<img src='" + picFile.result + "'" + "style='height:10rem;margin-bottom:1rem;'" + "id='image_upload"+ i +"'/>";
+                                            }
+                                        );
+                                        //Read the image
+                                        reader.readAsDataURL(file);
+                                    }
+                                } else {
+                                    console.log("Your browser does not support File API");
+                                }
                                 
-                                
-                                    // let image_upload = new FormData();
-                                    // let TotalImages = $('#image-upload')[0].files.length;  //Total Images
-                                    // let images = $('#image-upload')[0];  
-                                    // for (let i = 0; i < TotalImages; i++) {
-                                    //     image_upload.append('images' + i, images.files[i]);
-                                    // }
+                                //No images selected condition
+                                if (totalImages == 0){
+                                    document.getElementById("result").innerHTML = "";
+                                }
+
+                                document.getElementById('inputImages').addEventListener('change', handleFileSelect, false);
                             }
                         </script>
                     </form>

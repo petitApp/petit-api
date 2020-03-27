@@ -17,6 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/csv','usageController@store');
+
+
 //USER SERVICE
 Route::post('/user', 'UserController@createUser' );
 Route::post('/user/generateToken/{id}', 'UserController@generateToken' );

@@ -158,11 +158,9 @@ class AnimalControllerAdmin extends Controller {
                         //Check if array of pictures exists and it has values before adding the images
                         if (!empty($request->images) && count($request->images) > 0){
                             //Call to the addimages function after the user is already created in order to add it's relative images
-                            AnimalController::addImages($animal, $request->images);
+                            $response = AnimalController::addImages($animal, $request->images);
                         }
                         
-                        //Success response
-                        $response = array('code' => 200, 'animal' => $animal, 'msg' => 'Animal updated');
                     } catch (\Exception $exception) {
                         //Internal server error response
                         $response = array('code' => 500, 'error_msg' => $exception->getMessage());

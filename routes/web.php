@@ -57,11 +57,11 @@ Route::post('/animal/create', 'AnimalControllerAdmin@createAnimalAdmin');
 Route::get('/animals', 'AnimalControllerAdmin@getAnimalsAdmin');
 
 //UPDATE an animal by ID 
+Route::get('animal/{id}/update', 'AnimalControllerAdmin@getAnimalById');
 Route::post('animal/{id}/update', 'AnimalControllerAdmin@updateAnimalById');
 
 //GET to populate an animal data by a given ID. 
 //It is used before and after updating an animal in order to show feedback to the admin  
-Route::get('animal/{id}/update', 'AnimalControllerAdmin@getAnimalById');
 
 //TODO
 //Ruta antigua Comprobar validez actual
