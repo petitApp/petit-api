@@ -102,7 +102,7 @@
                             </label>
                             
                             <div class="col-md-6">
-                                <input id="latitude" type="number" min="1" class="form-control" name="latitude" autofocus>
+                                <input id="latitude" type="number" class="form-control" name="latitude" autofocus>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -111,7 +111,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input id="longitude" type="number" min="1" class="form-control" name="longitude"  autofocus>
+                                <input id="longitude" type="number" class="form-control" name="longitude"  autofocus>
                             </div>
                         </div>
                         <div class="form-group row">

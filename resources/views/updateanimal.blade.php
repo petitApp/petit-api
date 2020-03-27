@@ -105,7 +105,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input id="age" type="number" min="0" class="form-control" name="age" min="0" required  autofocus value="{{$animal->age}}">
+                                <input id="age" type="number" class="form-control" name="age" min="0" required  autofocus value="{{$animal->age}}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -114,7 +114,7 @@
                             </label>
                             
                             <div class="col-md-6">
-                                <input id="latitude" type="number" min="1" class="form-control" name="latitude" required  autofocus value="{{$animal->latitude}}">
+                                <input id="latitude" type="number" class="form-control" name="latitude" required  autofocus value="{{$animal->latitude}}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -123,7 +123,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input id="longitude" type="number" min="1" class="form-control" name="longitude" required  autofocus value="{{$animal->longitude}}">
+                                <input id="longitude" type="number" class="form-control" name="longitude" required  autofocus value="{{$animal->longitude}}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -173,7 +173,7 @@
                                             <div class="card-header" style="width:100%;">
                                                 Animal image number {{$i + 1}}  
                                             </div>
-                                            <img style="height:10rem;width:100%;" src="/app/public/{{$animalPictures[$i]}}" alt="image number {{$i + 1}}"/>
+                                            <img style="height:10rem;width:100%;" src="/storage/{{$animalPictures[$i]}}" alt="image number {{$i + 1}}"/>
                                         @endfor  
                                         <input name="images[]" id="inputImages" type="file" multiple="multiple" onChange="readMultipleURL(this)" style="border:0;display:flex;align-items:center;width: 90%;margin: 1rem 0;padding: 0;flex-direction: row;height: auto;justify-content: center; background-color:var(--primary); color: white" class="form-control" autofocus>
                                         <div id="result" style="width:100%;height:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;">
