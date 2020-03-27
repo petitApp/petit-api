@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Petit Admin Panel') }}</title>
+    <title>Pet It</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -20,9 +20,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
 </head>
-<body>
+<body style="background-color:var(--primary);">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mh-10">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mh-10 fixed-top" style="box-shadow: rgba(0, 0, 0, 0.50) 0px 9px 7px 0px !important;" >
             <div class="w-100 d-flex ml-1 mr-1 d-flex align-items-center">
              
                 <!-- Logo -->
@@ -35,17 +35,17 @@
         
                 <!-- Links -->
                 <ul class="navbar-nav">
+                    <li class="nav-item ml-3">
+                        <a class="nav-link bg-info rounded text-white" href="{{ url('/users') }}">GET ALL USERS </a>
+                    </li>
+                    <li class="nav-item ml-3">
+                        <a class="nav-link bg-info rounded text-white" href="{{ url('/animals')  }}">GET ALL ANIMALS</a>
+                    </li>
                     <li class="nav-item ml-5">
-                        <a class="nav-link bg-info rounded text-white" href="{{url('/user/create')  }}">CREATE USER</a>
+                        <a class="nav-link bg-info rounded text-white" href="{{url('/user/create')  }}">CREATE A NEW USER</a>
                     </li>
                     <li class="nav-item ml-3">
-                        <a class="nav-link bg-info rounded text-white" href="{{ url('/animal/create') }}">CREATE ANIMAL</a>
-                    </li>
-                    <li class="nav-item ml-3">
-                        <a class="nav-link bg-info rounded text-white" href="{{ url('/user/update') }}">UPDATE USER </a>
-                    </li>
-                    <li class="nav-item ml-3">
-                        <a class="nav-link bg-info rounded text-white" href="{{ url('/animal/update')  }}">UPDATE ANIMAL</a>
+                        <a class="nav-link bg-info rounded text-white" href="{{ url('/animal/create') }}">CREATE A NEW ANIMAL</a>
                     </li>
                 </ul>
                 
@@ -63,8 +63,9 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
+                            <!-- TODO change users auth -->
                             <li class="nav-item">
-                                <a class="nav-link bg-info rounded text-white" href="{{ route('login') }}">{{ __('LOGIN') }}</a>
+                                <a class="nav-link bg-info rounded text-white" href="{{ route('login') }}">{{ __('LOGOUT') }}</a>
                             </li>
                             <!-- @if (Route::has('register'))
                                 <li class="nav-item ml-4">
@@ -96,7 +97,9 @@
         </nav>
 
         <main class="py-4">
+            <div class="mt-5" style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
             @yield('content')
+            </div>
         </main>
 
     </div>
