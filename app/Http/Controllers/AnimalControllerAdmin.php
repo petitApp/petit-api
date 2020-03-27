@@ -152,8 +152,10 @@ class AnimalControllerAdmin extends Controller {
                             //It will be storaged in a private folder with a symlink so the we get the public route of the file in order to show it later
                             $animal->prefered_photo = substr($path, 6);
                         };
-                        $animal->breed = $request->breed ? $request->breed : $animal->breed;
-                        $animal->save();
+                            $animal->breed = $request->breed ? $request->breed : $animal->breed;
+                            $animal->save();
+
+                            $response = array('code' => 200,'animal' => $animal, 'msg'=> 'succes operation');
 
                         //Check if array of pictures exists and it has values before adding the images
                         if (!empty($request->images) && count($request->images) > 0){
