@@ -102,7 +102,7 @@ class AnimalControllerAdmin extends Controller {
                 
                     //Success response
                     $response = array('code' => 200, 'animal' => $animal,'aniamlPicture' => $animalPicture, 'msg' => 'Animal created');
-                }catch (\Exception $exception) {
+                }catch (\Throwable $exception) {
                     //Internal server error response
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }

@@ -74,8 +74,7 @@ class UserControllerAdmin extends Controller {
                 
                 //TODO - TO TEST
                 try {
-                    $user = User::where('email', '=', $request->email);
-
+                    $user = User::where('email', '=', $request->email)->get();
                     if (!$user->count()) {
                         try {
                             //Try to create the user
@@ -84,13 +83,17 @@ class UserControllerAdmin extends Controller {
                             $user->password = hash('sha256', $request->password);
                             $user->user_name = $request->user_name;
                             $token = uniqid() . $user->email;
+                            $user->latitude = $request->latitude;
+                            $user->longitude = $request->longitude;
                             $user->token = hash('sha256', $token);
+                            $user->active = $request->active; 
+                            $user->admin_user = $request->admin_user; 
                             $user->picture = $path;
                             $user->save();
 
                             //Success response
                             $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
-                        } catch (\Exception $exception) {
+                        } catch (\Throwable $exception) {
                             //Internal server error response
                             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                         }
@@ -100,7 +103,7 @@ class UserControllerAdmin extends Controller {
                         $response = array('code' => 400, 'error_msg' => "Email already registered");
                     }
 
-                } catch (\Throwable $th) {
+                } catch (\Throwable $exception) {
                     //Internal server error response
                     $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                 }
@@ -244,7 +247,7 @@ class UserControllerAdmin extends Controller {
 
         if (isset($id)) {
             try {
-                $user = User::where('id', '=', $id)->get(['id', 'name', 'email', 'user_name', 'address', 'telephone_number', 'picture']);
+                $user = User::where('id', '=', $id)->get(['id', 'name', 'email', 'user_name', 'address', 'telephone_number', 'picture','longitude', 'latitude']);
             } catch (\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
